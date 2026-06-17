@@ -25,6 +25,7 @@
     {"kategorie":"Mathematik","titel":"Primzahltest","datei":"primzahlen.json"},
     {"kategorie":"Mathematik","titel":"ggT (Euklid)","datei":"ggt_euklid.json"},
     {"kategorie":"Dynamische Programmierung","titel":"Fibonacci (DP)","datei":"fibonacci_dp.json"},
-    {"kategorie":"Dynamische Programmierung","titel":"0/1-Rucksack","datei":"rucksack.json"}
+    {"kategorie":"Dynamische Programmierung","titel":"0/1-Rucksack","datei":"rucksack.json"},
+    {"kategorie":"Grundlagen","titel":"Schaltung (Logik)","datei":"schaltung.json"}
   ]
 }

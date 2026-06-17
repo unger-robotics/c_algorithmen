@@ -47,6 +47,7 @@ run algorithmen/mathematik/primzahlen         Mathematik  "Primzahltest"
 run algorithmen/mathematik/ggt_euklid         Mathematik  "ggT (Euklid)"
 run algorithmen/dynprog/fibonacci_dp  "Dynamische Programmierung"  "Fibonacci (DP)"
 run algorithmen/dynprog/rucksack      "Dynamische Programmierung"  "0/1-Rucksack"
+run grundlagen/schaltung   Grundlagen  "Schaltung (Logik)"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {

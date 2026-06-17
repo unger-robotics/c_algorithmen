@@ -114,6 +114,7 @@
       case "relax":       return "Relaxiere Kante " + ev.from + " → " + ev.to + " (Distanz " + ev.dist + ").";
       case "setDist":     return "Distanz von Knoten " + ev.id + " = " + ev.dist + ".";
       case "path":        return "Kürzester Pfad: " + (ev.ids || []).join(" → ") + ".";
+      case "circuit":     return "Kombination " + ev.z + " / 128 — Lampe " + (ev.lampe ? "AN" : "aus") + ".";
       default:            return ev.t;
     }
   }

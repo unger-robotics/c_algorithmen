@@ -145,6 +145,12 @@ void trace_relax(int from, int to, int dist) { if (!tf) return; ev_begin("relax"
 void trace_set_dist(int id, int dist)      { if (!tf) return; ev_begin("setDist");  ev_int("id", id); ev_int("dist", dist); ev_end(); }
 void trace_path(const int *ids, int n)     { if (!tf) return; ev_begin("path");     ev_ints("ids", ids, n); ev_end(); }
 
+/* --- schaltung ----------------------------------------------------------- */
+void trace_circuit(int zaehler, const int *schalter, int n, int lampe) {
+  if (!tf) return;
+  ev_begin("circuit"); ev_int("z", zaehler); ev_ints("s", schalter, n); ev_int("lampe", lampe); ev_end();
+}
+
 void trace_finish(void) {
   if (!tf) return;
   fputs("\n]\n}\n", tf);

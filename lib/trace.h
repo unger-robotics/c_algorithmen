@@ -66,6 +66,9 @@ void trace_relax(int from, int to, int dist);
 void trace_set_dist(int id, int dist);
 void trace_path(const int *ids, int n);
 
+/* view "schaltung": eine Schalterstellung (n Schalter 0/1) + Lampenzustand */
+void trace_circuit(int zaehler, const int *schalter, int n, int lampe);
+
 void trace_finish(void);
 
 #ifdef __cplusplus
