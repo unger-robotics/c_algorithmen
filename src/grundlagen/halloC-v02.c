@@ -11,9 +11,9 @@
 #include "meineFkt.h" // eig. Bibliothek
 
 #define DIM 6         // Array-DIMENSION
-const float LICHT = 2.99793E8;
-const float PI    = 3.1415926535897932384;
-const float E     = 2.7182818284590452354;
+const double LICHT = 2.99793E8;
+const double PI    = 3.1415926535897932384;
+const double E     = 2.7182818284590452354;
 const int SEK_PRO_TAG = (60 * 60 * 24);    // Sekunden pro Tag
 int main(void){
 	char *msg = "\nHallo Welt!\n\n";
@@ -22,6 +22,6 @@ int main(void){
 	//getchar(); // Speicherkontrolle, haelt Programm im RAM
   return 0;
 }
-/* Ausgabe 
+/* Ausgabe
 
 */

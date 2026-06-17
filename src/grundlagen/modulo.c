@@ -1,5 +1,5 @@
-/* ju - 15.1.18 - modulo.c 
-   Modulo - Division mit Rest 
+/* ju - 15.1.18 - modulo.c
+   Modulo - Division mit Rest
 */
 #include <stdio.h>
 int main(void){

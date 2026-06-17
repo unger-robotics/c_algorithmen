@@ -20,25 +20,25 @@ int main(void){
 		// falschem Typ (check != 1) oder Wert außerhalb 0..255.
 		do{
 			printf("Eingabe1 - Dezimalzahl von 0 bis 255: ");
-			check = scanf("%d",&dez_zahl1);
+			check = scanf("%u",&dez_zahl1);
 			if((check != 1) || (dez_zahl1 > 255))
 				printf("	Fehler! Zahl\n");
-		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n') || (check != 1) || (dez_zahl1 > 255));		
-	
+		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n') || (check != 1) || (dez_zahl1 > 255));
+
 		do{
-			printf("Eingabe2 - Dezimalzahl von 0 bis 255: "); 
-			check = scanf("%d",&dez_zahl2);
+			printf("Eingabe2 - Dezimalzahl von 0 bis 255: ");
+			check = scanf("%u",&dez_zahl2);
 			if((check != 1) || (dez_zahl2 > 255))
 				printf("	Fehler! Zahl\n");
-		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n') || (check != 1) || (dez_zahl2 > 255));	
-		// Eingabe pruefen 
-		printf("Eingabe pruefen - Zahlen: %d %d\n\n",dez_zahl1, dez_zahl2); 		
+		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n') || (check != 1) || (dez_zahl2 > 255));
+		// Eingabe pruefen
+		printf("Eingabe pruefen - Zahlen: %u %u\n\n",dez_zahl1, dez_zahl2);
 
 		//++++++++++++
 		do{
-			printf("\n\nNoch einmal? [j/n] "); 
+			printf("\n\nNoch einmal? [j/n] ");
 			scanf("%c", &antwort);
-		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n'));			
+		}while(((clear_puffer = getchar()) != EOF && clear_puffer != '\n'));
 	}while((antwort == 'j') || (antwort == 'J'));
 
 	//int clear_puffer;

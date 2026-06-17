@@ -14,6 +14,7 @@ static Node *einfuegen(Node *root, int v, int parentId, const char *seite) {
   if (!root) {
     // Leerer Teilbaum erreicht -> genau hier gehört der neue Wert hin.
     Node *n = malloc(sizeof *n);
+    if (!n) { perror("malloc"); exit(1); }   // bei Speichermangel sauber abbrechen
     n->val = v; n->id = idc++; n->l = n->r = NULL;
     trace_node(n->id, v, parentId, seite);
     return n;
@@ -40,6 +41,11 @@ static void inorder(Node *n) {
   inorder(n->l); printf("%d ", n->val); inorder(n->r);
 }
 
+static void freigeben(Node *n) {   // Baum post-order freigeben: erst Kinder, dann Wurzel
+  if (!n) return;
+  freigeben(n->l); freigeben(n->r); free(n);
+}
+
 int main(int argc, char **argv) {
   trace_init(argc, argv);
   trace_begin("bst", "Binärer Suchbaum", "tree");
@@ -59,5 +65,6 @@ int main(int argc, char **argv) {
   printf("Inorder (sortiert): ");
   inorder(root);
   printf("\n");
+  freigeben(root);
   return 0;
 }

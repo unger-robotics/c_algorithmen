@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
   /* kürzesten Pfad zum Ziel rekonstruieren */
   int pfad[GN], plen = 0;
   for (int x = ziel; x >= 0; x = vorg[x]) pfad[plen++] = x;   // Vorgängerkette vom Ziel rückwärts ablaufen
-  int rev[GN];
+  int rev[GN] = {0};
   for (int i = 0; i < plen; i++) rev[i] = pfad[plen - 1 - i];
   trace_path(rev, plen);
   trace_done();

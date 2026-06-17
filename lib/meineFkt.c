@@ -34,11 +34,11 @@ int drittePotenz(int z){
 3 hoch 4 = 1* 3 * 3 * 3 * 3
          --- //trick
 3 hoch 0 = 1
-*/  
+*/
 unsigned long potenziere(int x, int y){ //basis, exponent
   unsigned long r = 1;
   for(int i = 0; i < y; i++){
-    r *= x;
+    r *= (unsigned long)x;   // x ist >= 0 (siehe Vertrag), Cast vermeidet Vorzeichen-Warnung
   }
   return r;
 }

@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
 
   for (int i = 0; i < n; i++) {
     Knoten *k = malloc(sizeof *k);
+    if (!k) { perror("malloc"); exit(1); }   // bei Speichermangel sauber abbrechen
     k->wert = werte[i]; k->id = i; k->next = NULL;
     trace_node(i, werte[i], -1, NULL);
     // Hinten anhängen: next des bisher letzten Knotens auf den neuen zeigen lassen.

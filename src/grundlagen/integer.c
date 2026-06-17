@@ -14,7 +14,7 @@ int main() {
 
    printf("INT = %d\n", INT_MIN);
    printf("INT = %d\n", INT_MAX);
-   printf("UINT = %u\n", UINT_MAX);
+   printf("UINT = %u\n", (unsigned int)UINT_MAX);
 
    printf("LONG = %ld\n", LONG_MIN);
    printf("LONG = %ld\n", LONG_MAX);
