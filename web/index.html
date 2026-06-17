@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C Algorithmen — interaktiver Player</title>
+  <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+  <header>
+    <h1>C&nbsp;Algorithmen <span class="sub">interaktiv verstehen</span></h1>
+    <div class="picker">
+      <label for="algo">Algorithmus:</label>
+      <select id="algo"></select>
+      <label class="filebtn">
+        Trace laden…
+        <input type="file" id="file" accept="application/json,.json" hidden>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage">
+      <canvas id="canvas" width="960" height="480"></canvas>
+      <div id="status" class="status">Wähle oben einen Algorithmus.</div>
+    </div>
+
+    <div class="controls">
+      <button id="reset"  title="Zurück zum Anfang">⏮</button>
+      <button id="back"   title="Ein Schritt zurück">◀</button>
+      <button id="play"   title="Abspielen / Pause">▶</button>
+      <button id="fwd"    title="Ein Schritt vor">▶❘</button>
+      <div class="spacer"></div>
+      <span class="counter"><span id="step">0</span>/<span id="total">0</span></span>
+      <input type="range" id="timeline" min="0" max="0" value="0">
+      <label class="speed">Tempo
+        <input type="range" id="speed" min="1" max="60" value="20" title="Schritte pro Sekunde">
+      </label>
+    </div>
+
+    <p id="meta" class="meta"></p>
+  </main>
+
+  <footer>
+    <span>Quelle der Wahrheit: die C-Programme unter <code>src/algorithmen/</code> erzeugen den Trace per <code>--trace</code>.</span>
+  </footer>
+
+  <!-- Renderer registrieren sich in window.RENDERERS[view]; danach der Player. -->
+  <script src="js/renderArray.js"></script>
+  <script src="js/renderTree.js"></script>
+  <script src="js/renderGraph.js"></script>
+  <script src="js/player.js"></script>
+</body>
+</html>

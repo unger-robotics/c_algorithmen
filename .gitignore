@@ -11,3 +11,6 @@ build/
 *~
 
 # Hinweis: web/traces/*.json bleiben versioniert (Demo-Daten fuer den Player)
+
+# Playwright-Test-Artefakte
+.playwright-mcp/
