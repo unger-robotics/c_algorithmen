@@ -1,0 +1,6 @@
+bitweises ODER (|)
+
+  Operanden  DEZ  HEX  BIN  
+  #  12  0x0c  0b1100  
+  ODER  4  0x04  0b100  
+  Erg.  12  0x0c  0b1100  
