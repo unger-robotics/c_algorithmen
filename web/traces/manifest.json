@@ -12,6 +12,9 @@
     {"kategorie":"Datenstrukturen","titel":"Stack (LIFO)","datei":"stack.json"},
     {"kategorie":"Datenstrukturen","titel":"Queue (FIFO)","datei":"queue.json"},
     {"kategorie":"Datenstrukturen","titel":"Binärer Suchbaum","datei":"bst.json"},
-    {"kategorie":"Datenstrukturen","titel":"Hashtabelle","datei":"hashtabelle.json"}
+    {"kategorie":"Datenstrukturen","titel":"Hashtabelle","datei":"hashtabelle.json"},
+    {"kategorie":"Graphen","titel":"Breitensuche (BFS)","datei":"bfs.json"},
+    {"kategorie":"Graphen","titel":"Tiefensuche (DFS)","datei":"dfs.json"},
+    {"kategorie":"Graphen","titel":"Dijkstra","datei":"dijkstra.json"}
   ]
 }

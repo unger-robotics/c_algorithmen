@@ -34,6 +34,9 @@ run algorithmen/datenstrukturen/stack             Datenstrukturen  "Stack (LIFO)
 run algorithmen/datenstrukturen/queue             Datenstrukturen  "Queue (FIFO)"
 run algorithmen/datenstrukturen/bst               Datenstrukturen  "Binärer Suchbaum"
 run algorithmen/datenstrukturen/hashtabelle       Datenstrukturen  "Hashtabelle"
+run algorithmen/graphen/bfs        Graphen  "Breitensuche (BFS)"
+run algorithmen/graphen/dfs        Graphen  "Tiefensuche (DFS)"
+run algorithmen/graphen/dijkstra   Graphen  "Dijkstra"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {
