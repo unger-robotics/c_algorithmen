@@ -1,0 +1,32 @@
+# ju -- 2026 -- build.yml
+# CI: baut alle Programme (Linux + macOS) und prueft, dass die eingecheckten
+# Demo-Traces noch zum Quellcode passen. Kein WebAssembly, kein Frontend-Build.
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain anzeigen
+        run: cc --version && make --version | head -1
+
+      - name: Alle Programme bauen
+        run: make all
+
+      - name: Traces erzeugen (jedes Programm muss sauber durchlaufen)
+        run: make traces
+
+      # Traces sind deterministisch (Lotto seedet bei --trace fest), daher muss
+      # der frisch erzeugte Stand byte-identisch zu den eingecheckten Demo-Daten
+      # sein. Diff-Check nur auf einer Plattform, um OS-Formatunterschiede zu meiden.
+      - name: Demo-Traces sind in sync mit dem Quellcode
+        if: matrix.os == 'ubuntu-latest'
+        run: git diff --exit-code web/traces/
