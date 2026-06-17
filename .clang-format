@@ -1,0 +1,16 @@
+# ju -- 2026 -- .clang-format
+# Annaeherung an den handgepflegten Projektstil (2 Leerzeichen, keine Tabs).
+# Hinweis: die CI fuehrt clang-format nur INFORMATIV aus (continue-on-error) —
+# der Lehrcode ist bewusst von Hand formatiert (ausgerichtete Mehrfach-
+# Statements wie `int t=a[i]; a[i]=a[j]; a[j]=t;`), was clang-format aufbrechen
+# wuerde. Die harten Regeln stehen in tools/check-hygiene.sh.
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+ColumnLimit: 0
+AllowShortFunctionsOnASingleLine: All
+AllowShortBlocksOnASingleLine: Always
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+KeepEmptyLinesAtTheStartOfBlocks: false

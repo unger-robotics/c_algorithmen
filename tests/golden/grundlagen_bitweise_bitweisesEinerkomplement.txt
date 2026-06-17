@@ -1,0 +1,5 @@
+
+Einerkomplement (~)
+
+Wert  =   10 = 0b0000 1010
+~Wert =  -11 = 0b1111 0101   (unsigned 8-Bit: 245, signed: -11)

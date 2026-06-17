@@ -1,0 +1,2 @@
+Kürzeste Distanz A->F: 7
+Pfad: A C D F

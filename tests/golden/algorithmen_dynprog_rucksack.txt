@@ -1,0 +1,1 @@
+Maximaler Wert bei Kapazität 10: 13

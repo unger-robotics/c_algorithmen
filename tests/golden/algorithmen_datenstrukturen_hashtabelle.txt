@@ -1,0 +1,6 @@
+Bucket[0]: 5
+Bucket[1]:
+Bucket[2]: 12 22 7 17
+Bucket[3]:
+Bucket[4]: 9
+17 gefunden (Bucket 2, Kettenposition 3)

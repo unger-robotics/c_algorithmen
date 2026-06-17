@@ -1,0 +1,1 @@
+Türme von Hanoi mit 3 Scheiben: 7 Züge.

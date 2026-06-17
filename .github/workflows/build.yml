@@ -1,38 +1,50 @@
 # ju -- 2026 -- build.yml
-# CI: baut alle Programme (Linux + macOS) und prueft, dass die eingecheckten
-# Demo-Traces noch zum Quellcode passen. Kein WebAssembly, kein Frontend-Build.
+# Baut alle Programme warnungsfrei (-Werror) mit gcc und clang und verifiziert
+# Traces (JSON, Schema, Manifest, gen-traces) sowie die deterministische
+# Terminal-Ausgabe (Golden-Tests).
 name: build
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  compile:
+    name: compile (-Werror)
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+            cxx: g++
+          - os: macos-latest
+            cc: cc
+            cxx: c++
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - name: Toolchain
+        run: ${{ matrix.cc }} --version && make --version | head -1
+      - name: Alle Programme bauen (Warnungen sind Fehler)
+        run: make all CC=${{ matrix.cc }} CXX=${{ matrix.cxx }} WARN="-Wall -Wextra -Wno-missing-field-initializers -Werror"
 
-      - name: Toolchain anzeigen
-        run: cc --version && make --version | head -1
-
-      - name: Alle Programme bauen
+  verify:
+    name: traces + golden
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bauen
         run: make all
-
       - name: Traces erzeugen (jedes Programm muss sauber durchlaufen)
         run: make traces
-
       - name: Alle Traces sind gültiges JSON
         run: |
           for f in web/traces/*.json; do python3 -m json.tool "$f" > /dev/null; done
-
+      - name: Trace-Schema, Manifest und gen-traces-Vollständigkeit
+        run: python3 tools/check-traces.py
+      - name: Golden-Tests (deterministische Terminal-Ausgaben)
+        run: sh tools/check-golden.sh
       # Die deterministischen Traces müssen byte-identisch zum eingecheckten Stand
-      # sein. Ausnahme: mitZuruecklegen.json (Lotto) nutzt rand() — das liefert je
-      # C-Standardbibliothek (glibc vs. BSD libc) trotz festem Seed andere Folgen;
-      # dieser Trace wird oben nur auf JSON-Gültigkeit geprüft. Diff auf einer
-      # Plattform genügt, da die anderen Traces nur ganzzahlige Werte enthalten.
+      # sein. Ausnahme: mitZuruecklegen.json (Lotto) nutzt rand() — je libc andere
+      # Folge; oben bereits auf JSON/Schema geprüft.
       - name: Demo-Traces sind in sync mit dem Quellcode
-        if: matrix.os == 'ubuntu-latest'
         run: git diff --exit-code -- web/traces ':(exclude)web/traces/mitZuruecklegen.json'

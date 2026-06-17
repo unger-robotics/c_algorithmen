@@ -1,0 +1,37 @@
+# ju -- 2026 -- web.yml
+# Lintet die Player-Skripte und testet den Player im echten Browser (Playwright).
+name: web
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: JS-Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Syntax-Check (node --check)
+        run: |
+          for f in web/js/*.js; do node --check "$f"; done
+      - name: ESLint
+        run: npx eslint web/js tests/e2e playwright.config.js
+
+  e2e:
+    name: Playwright-E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Chromium installieren
+        run: npx playwright install --with-deps chromium
+      - name: Player im Browser testen (startet python3-Webserver selbst)
+        run: npx playwright test

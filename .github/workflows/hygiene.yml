@@ -1,0 +1,28 @@
+# ju -- 2026 -- hygiene.yml
+# Erzwingt die Projekt-Invarianten; clang-format läuft nur informativ, weil der
+# Lehrcode bewusst von Hand formatiert ist.
+name: hygiene
+
+on: [push, pull_request]
+
+jobs:
+  hygiene:
+    name: Hygiene (LF, UTF-8, Header, Trailing-WS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sh tools/check-hygiene.sh
+
+  format:
+    name: clang-format (informativ)
+    runs-on: ubuntu-latest
+    continue-on-error: true    # Hinweise, kein blockierendes Gate
+    steps:
+      - uses: actions/checkout@v4
+      - name: clang-format installieren
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+      - name: Abweichungen vom .clang-format anzeigen
+        run: |
+          clang-format --dry-run --Werror \
+            $(git ls-files 'src/**/*.c' 'src/**/*.cpp' 'src/**/*.h' 'lib/*.c' 'lib/*.h') \
+            || echo "Hinweis: clang-format würde Stellen umformatieren (erwartet, rein informativ)."

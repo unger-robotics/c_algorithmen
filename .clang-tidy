@@ -1,0 +1,9 @@
+# ju -- 2026 -- .clang-tidy  (in der CI nur informativ, continue-on-error)
+# Fokus auf hochsignalige Bug-Checks statt Stil.
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -clang-analyzer-security.insecureAPI.*
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'

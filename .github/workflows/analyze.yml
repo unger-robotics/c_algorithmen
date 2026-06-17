@@ -1,0 +1,81 @@
+# ju -- 2026 -- analyze.yml
+# Strengere Compiler-Warnungen, Laufzeit-Sanitizer und statische Analyse.
+name: analyze
+
+on: [push, pull_request]
+
+jobs:
+  strict-warnings:
+    name: strenge Warnungen
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest    # gcc
+            cc: gcc
+            cxx: g++
+          - os: macos-latest     # clang
+            cc: cc
+            cxx: c++
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bauen mit -Wshadow -Wconversion -Wsign-conversion -Werror
+        run: |
+          make all CC=${{ matrix.cc }} CXX=${{ matrix.cxx }} \
+            WARN="-Wall -Wextra -Wno-missing-field-initializers -Wshadow -Wconversion -Wsign-conversion -Werror"
+
+  sanitizers:
+    name: ASan + UBSan + LSan
+    runs-on: ubuntu-latest    # LeakSanitizer wird nur unter Linux unterstützt
+    steps:
+      - uses: actions/checkout@v4
+      - name: Programme mit Sanitizern bauen und ausführen
+        run: |
+          set -e
+          export ASAN_OPTIONS=detect_leaks=1
+          export UBSAN_OPTIONS=print_stacktrace=1
+          SAN="-fsanitize=address,undefined -fno-sanitize-recover=all -g"
+          mkdir -p /tmp/san
+          for f in $(git ls-files 'src/**/*.c'); do
+            b=/tmp/san/$(echo "$f" | tr '/' '_')
+            cc $SAN -std=c17 -Ilib -o "$b" "$f" lib/trace.c lib/meineFkt.c -lm
+            case "$f" in *eingabe-user-pruefen*) echo "skip interaktiv: $f"; continue ;; esac
+            echo "run: $f"
+            "$b" < /dev/null > /dev/null
+            "$b" --trace /tmp/t.json < /dev/null > /dev/null
+          done
+          for f in $(git ls-files 'src/**/*.cpp'); do
+            b=/tmp/san/$(echo "$f" | tr '/' '_')
+            c++ $SAN -std=c++17 -Ilib -o "$b" "$f" -lm
+            echo "run: $f"; "$b" < /dev/null > /dev/null
+          done
+          echo "Sanitizer: alle Programme sauber."
+
+  cppcheck:
+    name: cppcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: cppcheck installieren
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+      - name: Statische Analyse (blockierend)
+        run: |
+          cppcheck --enable=warning,performance,portability --platform=unix64 \
+            --std=c17 --quiet --error-exitcode=2 --suppress=missingIncludeSystem \
+            -Ilib $(git ls-files 'src/**/*.c' 'lib/*.c')
+
+  clang-tidy:
+    name: clang-tidy (informativ)
+    runs-on: ubuntu-latest
+    continue-on-error: true    # Hinweise, kein blockierendes Gate
+    steps:
+      - uses: actions/checkout@v4
+      - name: clang-tidy installieren
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      - name: Lauf über src/
+        run: |
+          for f in $(git ls-files 'src/**/*.c'); do
+            echo "== $f =="
+            clang-tidy "$f" -- -std=c17 -Ilib || true
+          done
