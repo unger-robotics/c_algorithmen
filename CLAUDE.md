@@ -67,8 +67,6 @@ vorhandene `view` nutzt, muss man **nicht** im Frontend anfassen.
 - `web/` — `index.html`, `css/`, `js/`, `traces/`
 - `tools/gen-traces.sh` — Trace-/Manifest-Generator (Tabelle der Algorithmen)
 - `docs/` — `trace-schema.md`, `tabellen/`, `bilder/`
-- `archiv/` — **stillgelegte** Win10-/Linux-Altlasten (Makefiles, `.ps1`, Bash mit
-  `sudo`/`rm`/hartkodierten Pfaden). Referenz, **nicht ausführen**, nicht im Build.
 
 ## Verifikation (End-to-End)
 

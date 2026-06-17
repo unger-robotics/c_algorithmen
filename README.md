@@ -84,8 +84,7 @@ beschrieben.
 │   └── grundlagen/     ältere C-Lernbeispiele (Bitoperationen, Logik …)
 ├── web/                interaktiver Player (HTML/CSS/JS) + traces/
 ├── tools/gen-traces.sh erzeugt alle Traces + web/traces/manifest.json
-├── docs/               Trace-Schema, Tabellen, Bilder
-└── archiv/             stillgelegte Windows-/Linux-Altlasten (nicht ausführen)
+└── docs/               Trace-Schema, Tabellen, Bilder
 ```
 
 ## Grundlagen-Beispiele
@@ -101,9 +100,3 @@ selben `make all` gebaut, erzeugen aber keine Traces.
    und die passenden `trace_*`-Events einstreuen (siehe vorhandene Beispiele).
 3. In `tools/gen-traces.sh` eine `run`-Zeile ergänzen.
 4. `make traces && make web`.
-
-## Hinweis zu `archiv/`
-
-Der Ordner `archiv/` enthält die alten Windows-Makefiles, PowerShell-Skripte und
-Linux-Bash-Skripte (mit fest verdrahteten Pfaden, `sudo`/`rm`). Sie sind nur als
-Referenz aufbewahrt — **nicht ausführen**.
