@@ -1,0 +1,17 @@
+{
+"algo":"linearesuche",
+"titel":"Lineare Suche",
+"view":"array",
+"init":{"array":[7,2,9,4,1,8,3,6,5]},
+"events":[
+{"t":"note","text":"Lineare Suche nach 8: jedes Element der Reihe nach prüfen."},
+{"t":"highlight","idx":[0]},
+{"t":"highlight","idx":[1]},
+{"t":"highlight","idx":[2]},
+{"t":"highlight","idx":[3]},
+{"t":"highlight","idx":[4]},
+{"t":"highlight","idx":[5]},
+{"t":"found","i":5},
+{"t":"done"}
+]
+}

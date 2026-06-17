@@ -1,5 +1,12 @@
 {
   "algorithmen": [
-    {"kategorie":"Sortieren","titel":"Bubblesort","datei":"bubblesort.json"}
+    {"kategorie":"Sortieren","titel":"Bubblesort","datei":"bubblesort.json"},
+    {"kategorie":"Sortieren","titel":"Insertionsort","datei":"insertionsort.json"},
+    {"kategorie":"Sortieren","titel":"Selectionsort","datei":"selectionsort.json"},
+    {"kategorie":"Sortieren","titel":"Quicksort","datei":"quicksort.json"},
+    {"kategorie":"Sortieren","titel":"Mergesort","datei":"mergesort.json"},
+    {"kategorie":"Sortieren","titel":"Heapsort","datei":"heapsort.json"},
+    {"kategorie":"Suchen","titel":"Lineare Suche","datei":"linearesuche.json"},
+    {"kategorie":"Suchen","titel":"Binäre Suche","datei":"binaeresuche.json"}
   ]
 }

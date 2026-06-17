@@ -1,0 +1,19 @@
+{
+"algo":"binaeresuche",
+"titel":"Binäre Suche",
+"view":"array",
+"init":{"array":[2,4,6,8,10,12,14,16,18]},
+"events":[
+{"t":"note","text":"Binäre Suche nach 14 im sortierten Feld: Suchbereich halbieren."},
+{"t":"pointer","name":"lo","i":0},
+{"t":"pointer","name":"hi","i":8},
+{"t":"pointer","name":"mid","i":4},
+{"t":"highlight","idx":[4]},
+{"t":"pointer","name":"lo","i":5},
+{"t":"pointer","name":"hi","i":8},
+{"t":"pointer","name":"mid","i":6},
+{"t":"highlight","idx":[6]},
+{"t":"found","i":6},
+{"t":"done"}
+]
+}

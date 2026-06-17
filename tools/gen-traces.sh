@@ -22,6 +22,13 @@ run() {
 
 # ---- Algorithmen (Reihenfolge = Anzeige im Player) -----------------------
 run algorithmen/sortieren/bubblesort      Sortieren  "Bubblesort"
+run algorithmen/sortieren/insertionsort   Sortieren  "Insertionsort"
+run algorithmen/sortieren/selectionsort   Sortieren  "Selectionsort"
+run algorithmen/sortieren/quicksort       Sortieren  "Quicksort"
+run algorithmen/sortieren/mergesort       Sortieren  "Mergesort"
+run algorithmen/sortieren/heapsort        Sortieren  "Heapsort"
+run algorithmen/suchen/linearesuche       Suchen     "Lineare Suche"
+run algorithmen/suchen/binaeresuche       Suchen     "Binäre Suche"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {
