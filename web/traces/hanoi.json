@@ -1,0 +1,24 @@
+{
+"algo":"hanoi",
+"titel":"Türme von Hanoi",
+"view":"tree",
+"init":{"layout":"tree"},
+"events":[
+{"t":"note","text":"Türme von Hanoi: rekursiv n-1 Scheiben umlagern, größte bewegen, wieder auflegen."},
+{"t":"addNode","id":0,"val":3},
+{"t":"addNode","id":1,"val":2,"parent":0,"pos":"left"},
+{"t":"addNode","id":2,"val":1,"parent":1,"pos":"left"},
+{"t":"note","text":"Scheibe 1: A -> C"},
+{"t":"note","text":"Scheibe 2: A -> B"},
+{"t":"addNode","id":3,"val":1,"parent":1,"pos":"right"},
+{"t":"note","text":"Scheibe 1: C -> B"},
+{"t":"note","text":"Scheibe 3: A -> C"},
+{"t":"addNode","id":4,"val":2,"parent":0,"pos":"right"},
+{"t":"addNode","id":5,"val":1,"parent":4,"pos":"left"},
+{"t":"note","text":"Scheibe 1: B -> A"},
+{"t":"note","text":"Scheibe 2: B -> C"},
+{"t":"addNode","id":6,"val":1,"parent":4,"pos":"right"},
+{"t":"note","text":"Scheibe 1: A -> C"},
+{"t":"done"}
+]
+}

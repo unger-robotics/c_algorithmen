@@ -1,0 +1,25 @@
+{
+"algo":"fibonacci",
+"titel":"Fibonacci (Aufrufbaum)",
+"view":"tree",
+"init":{"layout":"tree"},
+"events":[
+{"t":"note","text":"Rekursive Fibonacci: jeder Knoten ist ein Aufruf fib(n)."},
+{"t":"addNode","id":0,"val":5},
+{"t":"addNode","id":1,"val":4,"parent":0,"pos":"left"},
+{"t":"addNode","id":2,"val":3,"parent":1,"pos":"left"},
+{"t":"addNode","id":3,"val":2,"parent":2,"pos":"left"},
+{"t":"addNode","id":4,"val":1,"parent":3,"pos":"left"},
+{"t":"addNode","id":5,"val":0,"parent":3,"pos":"right"},
+{"t":"addNode","id":6,"val":1,"parent":2,"pos":"right"},
+{"t":"addNode","id":7,"val":2,"parent":1,"pos":"right"},
+{"t":"addNode","id":8,"val":1,"parent":7,"pos":"left"},
+{"t":"addNode","id":9,"val":0,"parent":7,"pos":"right"},
+{"t":"addNode","id":10,"val":3,"parent":0,"pos":"right"},
+{"t":"addNode","id":11,"val":2,"parent":10,"pos":"left"},
+{"t":"addNode","id":12,"val":1,"parent":11,"pos":"left"},
+{"t":"addNode","id":13,"val":0,"parent":11,"pos":"right"},
+{"t":"addNode","id":14,"val":1,"parent":10,"pos":"right"},
+{"t":"done"}
+]
+}

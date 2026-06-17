@@ -15,6 +15,16 @@
     {"kategorie":"Datenstrukturen","titel":"Hashtabelle","datei":"hashtabelle.json"},
     {"kategorie":"Graphen","titel":"Breitensuche (BFS)","datei":"bfs.json"},
     {"kategorie":"Graphen","titel":"Tiefensuche (DFS)","datei":"dfs.json"},
-    {"kategorie":"Graphen","titel":"Dijkstra","datei":"dijkstra.json"}
+    {"kategorie":"Graphen","titel":"Dijkstra","datei":"dijkstra.json"},
+    {"kategorie":"Rekursion","titel":"Fibonacci (Aufrufbaum)","datei":"fibonacci.json"},
+    {"kategorie":"Rekursion","titel":"Türme von Hanoi","datei":"hanoi.json"},
+    {"kategorie":"Strings","titel":"String umkehren","datei":"string_umkehr.json"},
+    {"kategorie":"Strings","titel":"Palindrom-Prüfung","datei":"palindrom.json"},
+    {"kategorie":"Strings","titel":"Naive Textsuche","datei":"naive_suche.json"},
+    {"kategorie":"Mathematik","titel":"Sieb des Eratosthenes","datei":"sieb_eratosthenes.json"},
+    {"kategorie":"Mathematik","titel":"Primzahltest","datei":"primzahlen.json"},
+    {"kategorie":"Mathematik","titel":"ggT (Euklid)","datei":"ggt_euklid.json"},
+    {"kategorie":"Dynamische Programmierung","titel":"Fibonacci (DP)","datei":"fibonacci_dp.json"},
+    {"kategorie":"Dynamische Programmierung","titel":"0/1-Rucksack","datei":"rucksack.json"}
   ]
 }

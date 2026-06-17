@@ -37,6 +37,16 @@ run algorithmen/datenstrukturen/hashtabelle       Datenstrukturen  "Hashtabelle"
 run algorithmen/graphen/bfs        Graphen  "Breitensuche (BFS)"
 run algorithmen/graphen/dfs        Graphen  "Tiefensuche (DFS)"
 run algorithmen/graphen/dijkstra   Graphen  "Dijkstra"
+run algorithmen/rekursion/fibonacci   Rekursion  "Fibonacci (Aufrufbaum)"
+run algorithmen/rekursion/hanoi       Rekursion  "Türme von Hanoi"
+run algorithmen/strings/string_umkehr Strings    "String umkehren"
+run algorithmen/strings/palindrom     Strings    "Palindrom-Prüfung"
+run algorithmen/strings/naive_suche   Strings    "Naive Textsuche"
+run algorithmen/mathematik/sieb_eratosthenes  Mathematik  "Sieb des Eratosthenes"
+run algorithmen/mathematik/primzahlen         Mathematik  "Primzahltest"
+run algorithmen/mathematik/ggt_euklid         Mathematik  "ggT (Euklid)"
+run algorithmen/dynprog/fibonacci_dp  "Dynamische Programmierung"  "Fibonacci (DP)"
+run algorithmen/dynprog/rucksack      "Dynamische Programmierung"  "0/1-Rucksack"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {

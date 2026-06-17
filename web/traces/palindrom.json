@@ -1,0 +1,27 @@
+{
+"algo":"palindrom",
+"titel":"Palindrom-Prüfung",
+"view":"array",
+"init":{"labels":["R","E","N","T","N","E","R"]},
+"events":[
+{"t":"note","text":"Zeichen von außen nach innen vergleichen."},
+{"t":"pointer","name":"lo","i":0},
+{"t":"pointer","name":"hi","i":6},
+{"t":"compare","i":0,"j":6},
+{"t":"pointer","name":"lo","i":1},
+{"t":"pointer","name":"hi","i":5},
+{"t":"compare","i":1,"j":5},
+{"t":"pointer","name":"lo","i":2},
+{"t":"pointer","name":"hi","i":4},
+{"t":"compare","i":2,"j":4},
+{"t":"note","text":"Alle Paare gleich → Palindrom."},
+{"t":"markSorted","i":0},
+{"t":"markSorted","i":1},
+{"t":"markSorted","i":2},
+{"t":"markSorted","i":3},
+{"t":"markSorted","i":4},
+{"t":"markSorted","i":5},
+{"t":"markSorted","i":6},
+{"t":"done"}
+]
+}

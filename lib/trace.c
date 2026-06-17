@@ -63,6 +63,18 @@ void trace_init_array(const int *a, int n) {
   first_event = 1;
 }
 
+void trace_init_string(const char *s) {
+  if (!tf) return;
+  fputs("\"init\":{\"labels\":[", tf);
+  for (size_t i = 0; s[i]; i++) {
+    char buf[2] = { s[i], 0 };
+    if (i) fputc(',', tf);
+    jstr(buf);
+  }
+  fputs("]},\n\"events\":[\n", tf);
+  first_event = 1;
+}
+
 void trace_init_none(void) {
   if (!tf) return;
   fputs("\"init\":{},\n\"events\":[\n", tf);

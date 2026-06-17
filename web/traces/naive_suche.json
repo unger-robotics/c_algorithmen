@@ -1,0 +1,22 @@
+{
+"algo":"naive_suche",
+"titel":"Naive Textsuche",
+"view":"array",
+"init":{"labels":["A","L","G","O","R","I","T","H","M","U","S"]},
+"events":[
+{"t":"note","text":"Muster \"GOR\" an jeder Position anlegen und vergleichen."},
+{"t":"pointer","name":"start","i":0},
+{"t":"compare","i":0,"j":0},
+{"t":"pointer","name":"start","i":1},
+{"t":"compare","i":1,"j":1},
+{"t":"pointer","name":"start","i":2},
+{"t":"compare","i":2,"j":2},
+{"t":"compare","i":3,"j":3},
+{"t":"compare","i":4,"j":4},
+{"t":"markSorted","i":2},
+{"t":"markSorted","i":3},
+{"t":"markSorted","i":4},
+{"t":"found","i":2},
+{"t":"done"}
+]
+}

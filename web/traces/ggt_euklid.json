@@ -1,0 +1,19 @@
+{
+"algo":"ggt_euklid",
+"titel":"ggT (Euklid)",
+"view":"array",
+"init":{"array":[48,36]},
+"events":[
+{"t":"pointer","name":"a","i":0},
+{"t":"pointer","name":"b","i":1},
+{"t":"note","text":"ggT(a,b) = ggT(b, a mod b), bis b = 0."},
+{"t":"compare","i":0,"j":1},
+{"t":"set","i":0,"val":36},
+{"t":"set","i":1,"val":12},
+{"t":"compare","i":0,"j":1},
+{"t":"set","i":0,"val":12},
+{"t":"set","i":1,"val":0},
+{"t":"markSorted","i":0},
+{"t":"done"}
+]
+}
