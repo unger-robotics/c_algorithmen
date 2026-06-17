@@ -99,7 +99,9 @@
       case "swap":        return "Tausche Position " + ev.i + " und " + ev.j + ".";
       case "set":         return "Setze Position " + ev.i + " = " + ev.val + ".";
       case "highlight":   return "Hervorgehoben: " + (ev.idx || []).join(", ") + ".";
-      case "markSorted":  return "Position " + ev.i + " ist endgültig einsortiert.";
+      case "markSorted":  return (trace && trace.view === "lotto")
+                                 ? "Zahl " + (ev.i + 1) + " gezogen."
+                                 : "Position " + ev.i + " ist endgültig einsortiert.";
       case "pointer":     return "Zeiger „" + ev.name + "“ → Position " + ev.i + ".";
       case "found":       return "Gefunden an Position " + ev.i + ".";
       case "addNode":     return "Neuer Knoten " + ev.id +

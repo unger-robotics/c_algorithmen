@@ -1,0 +1,22 @@
+{
+"algo":"mitZuruecklegen",
+"titel":"Lotto 6 aus 49 (mit Zurücklegen)",
+"view":"lotto",
+"init":{"array":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]},
+"events":[
+{"t":"note","text":"6-mal eine Zufallszahl 1..49 ziehen — mit Zurücklegen, Wiederholung möglich."},
+{"t":"note","text":"Ziehung 1 von 6: Zahl 1"},
+{"t":"markSorted","i":0},
+{"t":"note","text":"Ziehung 2 von 6: Zahl 37"},
+{"t":"markSorted","i":36},
+{"t":"note","text":"Ziehung 3 von 6: Zahl 13"},
+{"t":"markSorted","i":12},
+{"t":"note","text":"Ziehung 4 von 6: Zahl 19"},
+{"t":"markSorted","i":18},
+{"t":"note","text":"Ziehung 5 von 6: Zahl 42"},
+{"t":"markSorted","i":41},
+{"t":"note","text":"Ziehung 6 von 6: Zahl 38"},
+{"t":"markSorted","i":37},
+{"t":"done"}
+]
+}

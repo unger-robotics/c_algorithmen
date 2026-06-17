@@ -1,87 +1,52 @@
 /* ju - 15.1.18 - mitZuruecklegen.c
-   Urnenmodell mit Zuruecklegen - Lotto 6 aus 49 
+   Urnenmodell mit Zuruecklegen - Lotto 6 aus 49.
+   Mit --trace <datei> werden die 6 Ziehungen für den Web-Player aufgezeichnet
+   (view "lotto"); dabei wird ein fester Seed genutzt, damit der Trace
+   reproduzierbar ist.
 */
 #include <stdio.h>
 #include <stdlib.h> // rand()
 #include <time.h>   // time()
-#define DIM 6       // Array-DIMENSION
-int main(void){
-	char *message      = "\nUrnenmodell mit Zuruecklegen - Lotto 6 aus 49\n";
-	char *md           = "\nAusgabe - Markdown\n\n";
-	char *tblMdKopf    = "| **Ziehung** | **Inhalt** |\n";
-	char *tblMdStrich  = "|------------:|-----------:|\n";
-	char *tex          = "\nAusgabe - LaTeX\n\n";
-	char *tblTexKopf   = "\\textbf{Ziehung} & \\textbf{Inhalt} \\\\ \n";
-	char *csv          = "\nAusgabe - Excel\n\n";	
-	char *tblCsvKopf   = "Ziehung;Inhalt\n";
-	int ziehung[DIM]={0};  // Array mit 6 Zahlen
-	int temp=0;
-	srand((unsigned)time( NULL)); 
+#include "trace.h"
+#define DIM 6       // Anzahl Ziehungen
 
-	// Array mit Zufallszahlen belegen
-	for(int i = 0; i < DIM; i++) {
-		temp=(int)rand()%49 + 1; // Zufallszahl zwischen 1-49
-		ziehung[i]=temp;
-	}
+int main(int argc, char **argv) {
+  trace_init(argc, argv);
+  srand(trace_is_active() ? 12345u : (unsigned)time(NULL));
 
-	printf("%s",message);
+  int ziehung[DIM] = {0};
+  for (int i = 0; i < DIM; i++) ziehung[i] = rand() % 49 + 1;  // Zufallszahl 1..49
 
-	// Ausgabe - Markdown
-	printf("%s",md);
-	printf("%s",tblMdKopf);
-	printf("%s",tblMdStrich);
-	for( int i = 0; i < DIM; i++){
-		printf("| %11d | %10d |\n",i+1, ziehung[i]);
-	}
+  /* --- Trace (view "lotto"): 7x7-Gitter, Ziehungen hervorheben --- */
+  int zahlen[49];
+  for (int i = 0; i < 49; i++) zahlen[i] = i + 1;
+  trace_begin("mitZuruecklegen", "Lotto 6 aus 49 (mit Zurücklegen)", "lotto");
+  trace_init_array(zahlen, 49);
+  trace_note("6-mal eine Zufallszahl 1..49 ziehen — mit Zurücklegen, Wiederholung möglich.");
+  for (int i = 0; i < DIM; i++) {
+    char buf[64];
+    snprintf(buf, sizeof buf, "Ziehung %d von 6: Zahl %d", i + 1, ziehung[i]);
+    trace_note(buf);
+    trace_mark_sorted(ziehung[i] - 1);
+  }
+  trace_done();
+  trace_finish();
 
-	// Ausgabe - Latex
-	printf("%s",tex);
-	printf("%s",tblTexKopf);
-	for( int i = 0; i < DIM; i++){
-		printf("%d & %2d \\\\ \n",i+1, ziehung[i]);
-	}
+  /* --- Terminal-Ausgabe (Markdown / LaTeX / CSV) --- */
+  printf("\nUrnenmodell mit Zuruecklegen - Lotto 6 aus 49\n");
 
-	// Ausgabe - Excel
-	printf("%s",csv);	
-	printf("%s",tblCsvKopf);
-	for( int i = 0; i < DIM; i++){
-		printf("%d;%d\n",i+1, ziehung[i]);
-	}
-	return 0;
+  printf("\nAusgabe - Markdown\n\n");
+  printf("| **Ziehung** | **Inhalt** |\n");
+  printf("|------------:|-----------:|\n");
+  for (int i = 0; i < DIM; i++) printf("| %11d | %10d |\n", i + 1, ziehung[i]);
+
+  printf("\nAusgabe - LaTeX\n\n");
+  printf("\\textbf{Ziehung} & \\textbf{Inhalt} \\\\ \n");
+  for (int i = 0; i < DIM; i++) printf("%d & %2d \\\\ \n", i + 1, ziehung[i]);
+
+  printf("\nAusgabe - Excel\n\n");
+  printf("Ziehung;Inhalt\n");
+  for (int i = 0; i < DIM; i++) printf("%d;%d\n", i + 1, ziehung[i]);
+
+  return 0;
 }
-/* Ausgabe
-Urnenmodell - mit Zuruecklegen - Lotto 6 aus 49
-
-Ausgabe - Markdown
-
-| **Ziehung** | **Inhalt** |
-|------------:|-----------:|
-|           1 |         36 |
-|           2 |         44 |
-|           3 |         41 |
-|           4 |         25 |
-|           5 |         21 |
-|           6 |         45 |
-
-Ausgabe - LaTeX
-
-\textbf{Ziehung} & \textbf{Inhalt} \\ 
-1 & 36 \\ 
-2 & 44 \\ 
-3 & 41 \\ 
-4 & 25 \\ 
-5 & 21 \\ 
-6 & 45 \\ 
-
-Ausgabe - Excel
-
-Ziehung;Inhalt
-1;36
-2;44
-3;41
-4;25
-5;21
-6;45
- */
-
-
