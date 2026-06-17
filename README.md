@@ -67,11 +67,14 @@ Algorithmus wählen.
 | Strings | Umkehren, Palindrom-Prüfung, naive Textsuche |
 | Mathematik | Sieb des Eratosthenes, Primzahltest, ggT (Euklid) |
 | Dynamische Programmierung | Fibonacci-Tabelle, 0/1-Rucksack |
+| Grundlagen (visualisiert) | Bitoperationen (UND/ODER/XOR/Einerkomplement/Verschiebung), Logik-Wahrheitstabelle, Lotto 6 aus 49, Schaltung |
 
-Die Visualisierung kennt drei Sichten (`view`): `array` (Balken bzw. Buchstaben),
-`tree` (Baum/Liste/Stack/Queue/Hash) und `graph`. Welche Sicht ein Algorithmus
-nutzt, steht in seinem Trace; das Format ist in [docs/trace-schema.md](docs/trace-schema.md)
-beschrieben.
+Die Visualisierung wählt anhand der Sicht (`view`) im Trace einen Renderer:
+`array` (Balken bzw. Buchstaben), `tree` (Baum/Liste/Stack/Queue/Hash), `graph`,
+`bits` (Bit-Reihen), `logik` (Wahrheitstabelle), `lotto` (Zahlengitter) und
+`schaltung` (Schaltbild). Das Trace-Format ist in
+[docs/trace-schema.md](docs/trace-schema.md) beschrieben; neue Algorithmen, die
+eine vorhandene Sicht nutzen, brauchen keine Frontend-Änderung.
 
 ## Projektstruktur
 
@@ -91,7 +94,9 @@ beschrieben.
 
 Unter `src/grundlagen/` liegen die ursprünglichen Lernprogramme: bitweise
 Operatoren, Logik-/Zahlensystem-Tabellen, Eingabeprüfung u. a. Sie werden vom
-selben `make all` gebaut, erzeugen aber keine Traces.
+selben `make all` gebaut. Mehrere davon sind ebenfalls interaktiv visualisiert
+(Bitoperationen, Logik, Lotto, Schaltung — siehe Tabelle oben); die übrigen
+(z. B. Hallo-Welt, Eingabeprüfung) laufen nur im Terminal.
 
 ## Eigene Algorithmen hinzufügen
 

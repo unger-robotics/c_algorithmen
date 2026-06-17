@@ -52,7 +52,9 @@ Drei Teile, lose über ein JSON-Format gekoppelt:
    Step/Timeline/Tempo) und wählt anhand von `trace.view` einen Renderer aus
    `window.RENDERERS`: `renderArray.js` (view `array`, Balken **oder** Buchstaben
    bei `init.labels`), `renderTree.js` (view `tree`; Layouts via `init.layout`:
-   `tree`/`chain-h`/`chain-v`/`hash`), `renderGraph.js` (view `graph`).
+   `tree`/`chain-h`/`chain-v`/`hash`), `renderGraph.js` (view `graph`),
+   `renderBits.js` (view `bits`), `renderLogik.js` (view `logik`),
+   `renderLotto.js` (view `lotto`), `renderSchaltung.js` (view `schaltung`).
 
 Das Trace-Event-Format ist die zentrale Schnittstelle und in
 [docs/trace-schema.md](docs/trace-schema.md) dokumentiert. Renderer ignorieren
