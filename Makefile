@@ -52,6 +52,13 @@ trace: $(BUILD)/$(NAME)
 	@./$(BUILD)/$(NAME) --trace $(OUT)
 	@echo "Trace -> $(OUT)"
 
+# Auto-Debug: ein Programm mit Datei:Zeile-Symbolen nicht-interaktiv unter lldb
+# laufen lassen; bei Absturz automatischer Backtrace. Logik in tools/debug.sh.
+#   make debug NAME=algorithmen/sortieren/quicksort
+#   make debug NAME=algorithmen/sortieren/quicksort ARGS='--trace /tmp/t.json'
+debug:
+	@sh tools/debug.sh "$(NAME)" $(ARGS)
+
 # Alle Demo-Traces (neu) erzeugen.
 traces: all
 	@sh tools/gen-traces.sh
@@ -78,4 +85,4 @@ memcheck:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all run trace traces web test memcheck clean
+.PHONY: all run trace traces web debug test memcheck clean

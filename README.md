@@ -42,6 +42,15 @@ Einen Trace gezielt neu erzeugen:
 make trace NAME=algorithmen/sortieren/quicksort OUT=web/traces/quicksort.json
 ```
 
+Ein Programm automatisch debuggen — läuft nicht-interaktiv unter `lldb`; bei
+einem Absturz (Segfault/Assert) gibt es selbsttätig einen Backtrace mit
+Datei:Zeile aus, sonst die normale Ausgabe:
+
+```sh
+make debug NAME=algorithmen/sortieren/quicksort
+make debug NAME=algorithmen/sortieren/quicksort ARGS='--trace /tmp/t.json'
+```
+
 ## Web-Player
 
 `make web` starten, dann <http://localhost:8000/web/> öffnen (der Webserver ist
@@ -110,7 +119,7 @@ Weitere Gates: `tools/check-hygiene.sh` (Konventionen), `tools/check-traces.py`
 │   └── grundlagen/     ältere C-Lernbeispiele (Bitoperationen, Logik …)
 ├── web/                interaktiver Player (HTML/CSS/JS) + traces/
 ├── tests/              golden/ (Terminal-Ausgaben), unit/ (C-Unit-Tests), e2e/ (Player)
-├── tools/              gen-traces.sh, check-{golden,traces,hygiene,memory}.sh
+├── tools/              gen-traces.sh, debug.sh, check-{golden,traces,hygiene,memory}.sh
 └── docs/               Trace-Schema, Tabellen, Bilder
 ```
 
