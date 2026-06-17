@@ -1,0 +1,881 @@
+<!doctype html>
+<!-- ju -- 2026 -- kanban_board.html -->
+<!-- Lern-Tool zum systematischen Durcharbeiten der Codedateien dieses Repos.
+     Eigenstaendig (eine Datei, inline CSS+JS), offline lauffaehig, responsiv.
+     Status wird im localStorage des Browsers gespeichert. PDF via Drucken. -->
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code durcharbeiten — Kanban</title>
+  <style>
+    :root {
+      --bg:        #0f1420;
+      --panel:     #19202e;
+      --panel-2:   #222b3d;
+      --ink:       #e6ecf5;
+      --muted:     #8a98ad;
+      --accent:    #4aa3ff;
+      --line:      #2c3650;
+      --offen:     #8a98ad;
+      --arbeit:    #f2c14e;
+      --verstanden:#4cc88a;
+      --danger:    #ef7d3b;
+      --radius:    10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif;
+    }
+
+    h1, h2, h3 { margin: 0; font-weight: 600; }
+
+    /* ---- Kopfzeile ------------------------------------------------------ */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+      padding: 12px 16px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar h1 { font-size: 18px; margin-right: auto; }
+    .topbar h1 small { color: var(--muted); font-weight: 400; font-size: 13px; }
+
+    .progress { display: flex; align-items: center; gap: 8px; min-width: 200px; }
+    .progress .bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      overflow: hidden;
+    }
+    .progress .bar > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--verstanden);
+      transition: width .25s ease;
+    }
+    .progress .count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    button {
+      font: inherit;
+      color: var(--ink);
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #06121f; font-weight: 600; }
+    button.ghost { background: transparent; }
+    button.small { padding: 3px 9px; font-size: 13px; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ---- Tabs ----------------------------------------------------------- */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 10px 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .tabs button {
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: var(--muted);
+      padding: 9px 16px;
+    }
+    .tabs button.active {
+      color: var(--ink);
+      background: var(--panel);
+      border-color: var(--line);
+    }
+
+    main { padding: 16px; max-width: 1280px; margin: 0 auto; }
+
+    .view { display: none; }
+    .view.active { display: block; }
+    .view > h2 { margin-bottom: 4px; }
+    .view > .hint { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+
+    /* ---- Board ---------------------------------------------------------- */
+    .board-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .chip {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .chip.active { color: var(--ink); border-color: var(--accent); background: var(--panel-2); }
+
+    .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .column {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+      min-height: 120px;
+    }
+    .column.drag-over { border-color: var(--accent); }
+    .col-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .col-head .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .col-head[data-status="offen"]      .dot { background: var(--offen); }
+    .col-head[data-status="arbeit"]     .dot { background: var(--arbeit); }
+    .col-head[data-status="verstanden"] .dot { background: var(--verstanden); }
+    .col-head .n { margin-left: auto; color: var(--muted); font-size: 13px; }
+    .cards { display: flex; flex-direction: column; gap: 8px; min-height: 40px; }
+
+    .card {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--muted);
+      border-radius: 8px;
+      padding: 9px 10px;
+      cursor: grab;
+    }
+    .card[data-status="arbeit"]     { border-left-color: var(--arbeit); }
+    .card[data-status="verstanden"] { border-left-color: var(--verstanden); }
+    .card.dragging { opacity: .5; }
+    .card-top { display: flex; align-items: flex-start; gap: 6px; }
+    .card .titel { font-weight: 600; font-size: 14px; flex: 1; }
+    .card .path { font: 12px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--muted); word-break: break-all; margin: 2px 0 6px; }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--accent);
+      border: 1px solid var(--line);
+      margin-bottom: 6px;
+    }
+    .card-controls { display: flex; gap: 4px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; }
+    .checks label { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); cursor: pointer; }
+    .checks input { accent-color: var(--verstanden); }
+    .card textarea {
+      width: 100%;
+      margin-top: 4px;
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 6px;
+      font: 13px/1.4 inherit;
+      resize: vertical;
+      min-height: 34px;
+    }
+
+    /* ---- Roadmap -------------------------------------------------------- */
+    .phase {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .phase-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .phase-top h3 { font-size: 15px; }
+    .phase-top .num { color: var(--accent); font-variant-numeric: tabular-nums; }
+    .phase-top .frac { margin-left: auto; color: var(--muted); font-size: 13px; }
+    .phase .bar { height: 7px; border-radius: 999px; background: var(--panel-2); overflow: hidden; margin: 10px 0; }
+    .phase .bar > span { display: block; height: 100%; background: var(--verstanden); }
+    .phase-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .phase-meta input[type="text"] { flex: 1; min-width: 160px; }
+    .phase-meta label { color: var(--muted); font-size: 13px; }
+
+    input[type="text"], input[type="date"], .goal textarea, .todo-add input {
+      background: var(--panel-2);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 7px 9px;
+      font: inherit;
+    }
+
+    /* ---- SMART ---------------------------------------------------------- */
+    .goal {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .goal-top { display: flex; gap: 8px; margin-bottom: 10px; }
+    .goal-top input { flex: 1; font-weight: 600; }
+    .smart-grid { display: grid; grid-template-columns: 110px 1fr; gap: 8px 10px; align-items: start; }
+    .smart-grid .lab { color: var(--accent); font-weight: 600; font-size: 13px; padding-top: 8px; }
+    .smart-grid .lab small { display: block; color: var(--muted); font-weight: 400; }
+    .smart-grid textarea, .goal textarea {
+      width: 100%; min-height: 38px; resize: vertical; font: 14px/1.4 inherit;
+    }
+
+    /* ---- ToDo ----------------------------------------------------------- */
+    .todo-add { display: flex; gap: 8px; margin-bottom: 12px; }
+    .todo-add input { flex: 1; }
+    .todo-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .todo-list li {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .todo-list input[type="checkbox"] { accent-color: var(--verstanden); width: 17px; height: 17px; }
+    .todo-list .txt { flex: 1; }
+    .todo-list li.done .txt { text-decoration: line-through; color: var(--muted); }
+
+    .empty { color: var(--muted); font-style: italic; padding: 6px 2px; }
+
+    /* ---- Responsiv ------------------------------------------------------ */
+    @media (max-width: 720px) {
+      .board { grid-template-columns: 1fr; }
+      .topbar h1 { margin-right: 0; width: 100%; }
+      .smart-grid { grid-template-columns: 1fr; gap: 4px; }
+      .smart-grid .lab { padding-top: 4px; }
+    }
+
+    /* ---- Druck / PDF ---------------------------------------------------- */
+    @media print {
+      :root { --bg: #fff; --ink: #111; --muted: #555; --panel: #fff; --panel-2: #fff; --line: #bbb; }
+      body { background: #fff; color: #111; }
+      .topbar { position: static; border: none; }
+      .no-print, .tabs, .actions, .card-controls, .board-filter,
+      .todo-add, .goal-top button, .phase-meta input[type="text"] { display: none !important; }
+      .progress { display: none; }
+      main { max-width: none; }
+      .view { display: block !important; margin-bottom: 26px; }
+      .view > h2 { border-bottom: 2px solid #000; padding-bottom: 4px; }
+      .board { grid-template-columns: 1fr; gap: 8px; }
+      .column, .card, .phase, .goal, .todo-list li {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+        background: #fff;
+      }
+      .card { border-left: 3px solid #999; }
+      textarea { border: 1px solid #ddd; }
+      a[href]:after { content: ""; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>Code durcharbeiten — Kanban<br><small>c_algorithmen · Lern-Fortschritt</small></h1>
+    <div class="progress" title="Anteil verstandener Dateien">
+      <div class="bar"><span id="progbar"></span></div>
+      <span class="count" id="progcount">0 / 0</span>
+    </div>
+    <div class="actions no-print">
+      <button id="btn-pdf" class="primary" title="Als PDF drucken">PDF</button>
+      <button id="btn-export" class="ghost" title="Stand als JSON sichern">Export</button>
+      <button id="btn-import" class="ghost" title="JSON-Stand laden">Import</button>
+      <button id="btn-reset" class="ghost" title="Auf Ausgangszustand zuruecksetzen">Reset</button>
+      <input type="file" id="file-import" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <nav class="tabs no-print" id="tabs">
+    <button data-tab="board" class="active">Board</button>
+    <button data-tab="roadmap">Roadmap</button>
+    <button data-tab="smart">SMART</button>
+    <button data-tab="todo">ToDo</button>
+  </nav>
+
+  <main>
+    <section class="view active" id="view-board" data-tab="board">
+      <h2>Board</h2>
+      <p class="hint">Karten = Codedateien. Ziehen oder mit ◀ ▶ zwischen den Spalten
+        verschieben; Checkliste abhaken (alle vier → automatisch „Verstanden").</p>
+      <div class="board-filter no-print" id="filter"></div>
+      <div class="board" id="board"></div>
+      <p style="margin-top:14px"><button id="btn-add" class="small no-print">+ Karte hinzufügen</button></p>
+    </section>
+
+    <section class="view" id="view-roadmap" data-tab="roadmap">
+      <h2>Roadmap</h2>
+      <p class="hint">Didaktische Reihenfolge der Themen mit Fortschritt (Anteil
+        „Verstanden"). Notiz und Zieldatum je Phase frei setzbar.</p>
+      <div id="roadmap"></div>
+    </section>
+
+    <section class="view" id="view-smart" data-tab="smart">
+      <h2>SMART-Lernziele</h2>
+      <p class="hint">Spezifisch · Messbar · Attraktiv · Relevant · Terminiert.</p>
+      <div id="smart"></div>
+      <p><button id="btn-add-goal" class="small no-print">+ Ziel hinzufügen</button></p>
+    </section>
+
+    <section class="view" id="view-todo" data-tab="todo">
+      <h2>ToDo-Liste</h2>
+      <p class="hint">Freie Aufgaben rund ums Durcharbeiten.</p>
+      <div class="todo-add no-print">
+        <input type="text" id="todo-input" placeholder="Neue Aufgabe … (Enter)">
+        <button id="btn-add-todo">Hinzufügen</button>
+      </div>
+      <ul class="todo-list" id="todo-list"></ul>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var STORE_KEY = "kanban_c_algorithmen";
+    var STATE_VERSION = 1;
+
+    // ---- Themen/Phasen in didaktischer Reihenfolge ----------------------
+    var KATEGORIEN = [
+      "Sortieren", "Suchen", "Datenstrukturen", "Graphen", "Rekursion",
+      "Strings", "Mathematik", "Dynamische Programmierung", "Grundlagen",
+      "Bitoperationen", "Bibliothek/Tests"
+    ];
+
+    var COLUMNS = [
+      { key: "offen",      label: "Offen" },
+      { key: "arbeit",     label: "In Arbeit" },
+      { key: "verstanden", label: "Verstanden" }
+    ];
+
+    var CHECKS = [
+      { key: "gelesen",    label: "gelesen" },
+      { key: "verstanden", label: "verstanden" },
+      { key: "nachgebaut", label: "nachgebaut" },
+      { key: "test",       label: "Test" }
+    ];
+
+    // ---- Seed: alle Codedateien des Repos (Pfad = stabile ID) -----------
+    var SEED = [
+      ["Sortieren", "Bubblesort", "src/algorithmen/sortieren/bubblesort.c"],
+      ["Sortieren", "Insertionsort", "src/algorithmen/sortieren/insertionsort.c"],
+      ["Sortieren", "Selectionsort", "src/algorithmen/sortieren/selectionsort.c"],
+      ["Sortieren", "Quicksort", "src/algorithmen/sortieren/quicksort.c"],
+      ["Sortieren", "Mergesort", "src/algorithmen/sortieren/mergesort.c"],
+      ["Sortieren", "Heapsort", "src/algorithmen/sortieren/heapsort.c"],
+      ["Suchen", "Lineare Suche", "src/algorithmen/suchen/linearesuche.c"],
+      ["Suchen", "Binäre Suche", "src/algorithmen/suchen/binaeresuche.c"],
+      ["Datenstrukturen", "Verkettete Liste", "src/algorithmen/datenstrukturen/verkettete_liste.c"],
+      ["Datenstrukturen", "Stack (LIFO)", "src/algorithmen/datenstrukturen/stack.c"],
+      ["Datenstrukturen", "Queue (FIFO)", "src/algorithmen/datenstrukturen/queue.c"],
+      ["Datenstrukturen", "Binärer Suchbaum", "src/algorithmen/datenstrukturen/bst.c"],
+      ["Datenstrukturen", "Hashtabelle", "src/algorithmen/datenstrukturen/hashtabelle.c"],
+      ["Graphen", "Breitensuche (BFS)", "src/algorithmen/graphen/bfs.c"],
+      ["Graphen", "Tiefensuche (DFS)", "src/algorithmen/graphen/dfs.c"],
+      ["Graphen", "Dijkstra", "src/algorithmen/graphen/dijkstra.c"],
+      ["Graphen", "Beispielgraph (Header)", "src/algorithmen/graphen/beispielgraph.h"],
+      ["Rekursion", "Fibonacci (Aufrufbaum)", "src/algorithmen/rekursion/fibonacci.c"],
+      ["Rekursion", "Türme von Hanoi", "src/algorithmen/rekursion/hanoi.c"],
+      ["Strings", "String umkehren", "src/algorithmen/strings/string_umkehr.c"],
+      ["Strings", "Palindrom-Prüfung", "src/algorithmen/strings/palindrom.c"],
+      ["Strings", "Naive Textsuche", "src/algorithmen/strings/naive_suche.c"],
+      ["Mathematik", "Sieb des Eratosthenes", "src/algorithmen/mathematik/sieb_eratosthenes.c"],
+      ["Mathematik", "Primzahltest", "src/algorithmen/mathematik/primzahlen.c"],
+      ["Mathematik", "ggT (Euklid)", "src/algorithmen/mathematik/ggt_euklid.c"],
+      ["Dynamische Programmierung", "Fibonacci (DP-Tabelle)", "src/algorithmen/dynprog/fibonacci_dp.c"],
+      ["Dynamische Programmierung", "0/1-Rucksack", "src/algorithmen/dynprog/rucksack.c"],
+      ["Grundlagen", "Hallo C v01", "src/grundlagen/halloC-v01.c"],
+      ["Grundlagen", "Hallo C v02", "src/grundlagen/halloC-v02.c"],
+      ["Grundlagen", "Integer-Eigenschaften", "src/grundlagen/integer.c"],
+      ["Grundlagen", "Modulo", "src/grundlagen/modulo.c"],
+      ["Grundlagen", "Eingabeprüfung v01", "src/grundlagen/eingabe-user-pruefen.c"],
+      ["Grundlagen", "Eingabeprüfung v02", "src/grundlagen/eingabe-user-pruefen-v02.c"],
+      ["Grundlagen", "Logik (Wahrheitstabelle)", "src/grundlagen/logik.c"],
+      ["Grundlagen", "Logik v02", "src/grundlagen/logik-v02.c"],
+      ["Grundlagen", "Lotto 6 aus 49", "src/grundlagen/mitZuruecklegen.c"],
+      ["Grundlagen", "Schaltung", "src/grundlagen/schaltung.c"],
+      ["Bitoperationen", "Bitweises UND (&)", "src/grundlagen/bitweise/bitweisesUND.c"],
+      ["Bitoperationen", "Bitweises ODER (|)", "src/grundlagen/bitweise/bitweisesODER.c"],
+      ["Bitoperationen", "Bitweises ODER v02", "src/grundlagen/bitweise/bitweisesODER-v02.c"],
+      ["Bitoperationen", "Bitweises XOR (^)", "src/grundlagen/bitweise/bitweisesXOR.c"],
+      ["Bitoperationen", "Einerkomplement (~)", "src/grundlagen/bitweise/bitweisesEinerkomplement.c"],
+      ["Bitoperationen", "Verschiebung (<< >>)", "src/grundlagen/bitweise/bitweiseVerschiebung.c"],
+      ["Bitoperationen", "Bit-Visualisierung (Header)", "src/grundlagen/bitweise/bitsviz.h"],
+      ["Bibliothek/Tests", "Trace-Bibliothek (Header)", "lib/trace.h"],
+      ["Bibliothek/Tests", "Trace-Bibliothek", "lib/trace.c"],
+      ["Bibliothek/Tests", "meineFkt (Header)", "lib/meineFkt.h"],
+      ["Bibliothek/Tests", "meineFkt", "lib/meineFkt.c"],
+      ["Bibliothek/Tests", "Unit-Test: trace", "tests/unit/test_trace.c"],
+      ["Bibliothek/Tests", "Unit-Test: meineFkt", "tests/unit/test_meinefkt.c"]
+    ];
+
+    // ---- Hilfsfunktionen ------------------------------------------------
+    var uidCounter = 0;
+    function uid(prefix) {
+      uidCounter += 1;
+      return (prefix || "id") + "-" + Date.now().toString(36) + "-" + uidCounter;
+    }
+
+    function esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function freshCards() {
+      return SEED.map(function (row) {
+        return {
+          id: row[2], kategorie: row[0], titel: row[1], pfad: row[2],
+          status: "offen",
+          checks: { gelesen: false, verstanden: false, nachgebaut: false, test: false },
+          notiz: ""
+        };
+      });
+    }
+
+    function defaultState() {
+      return {
+        version: STATE_VERSION,
+        cards: freshCards(),
+        smart: [{
+          id: uid("goal"),
+          titel: "Sortierverfahren sicher beherrschen",
+          s: "Alle 6 Sortier-Algorithmen lesen, verstehen und je einmal selbst nachimplementieren.",
+          m: "6/6 Sortier-Karten in der Spalte Verstanden, je Checkliste komplett.",
+          a: "Täglich ein Algorithmus, mit dem Web-Player zur Visualisierung (make web).",
+          r: "Grundlage für Suchen, Datenstrukturen und die Prüfung.",
+          t: "Bis 2026-07-15."
+        }],
+        todos: [
+          { id: uid("todo"), text: "Big-O (Zeit/Speicher) je Algorithmus notieren", done: false },
+          { id: uid("todo"), text: "Web-Player zu jedem Trace einmal durchspielen (make web)", done: false },
+          { id: uid("todo"), text: "make debug bei einem Absturz ausprobieren", done: false }
+        ],
+        roadmap: {},
+        ui: { tab: "board", filter: "alle" }
+      };
+    }
+
+    // ---- State laden/speichern -----------------------------------------
+    var state = loadState();
+
+    function loadState() {
+      try {
+        var raw = localStorage.getItem(STORE_KEY);
+        if (!raw) { return defaultState(); }
+        var s = JSON.parse(raw);
+        if (!s || !Array.isArray(s.cards)) { return defaultState(); }
+        s.smart = Array.isArray(s.smart) ? s.smart : [];
+        s.todos = Array.isArray(s.todos) ? s.todos : [];
+        s.roadmap = s.roadmap || {};
+        s.ui = s.ui || { tab: "board", filter: "alle" };
+        return s;
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    function save() {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+      catch (e) { /* Speicher voll/blockiert — still ignorieren */ }
+    }
+
+    function cardById(id) {
+      for (var i = 0; i < state.cards.length; i++) {
+        if (state.cards[i].id === id) { return state.cards[i]; }
+      }
+      return null;
+    }
+
+    // ---- Rendern --------------------------------------------------------
+    function renderProgress() {
+      var total = state.cards.length;
+      var done = state.cards.filter(function (c) { return c.status === "verstanden"; }).length;
+      var pct = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById("progbar").style.width = pct + "%";
+      document.getElementById("progcount").textContent = done + " / " + total + " verstanden";
+    }
+
+    function renderFilter() {
+      var box = document.getElementById("filter");
+      var cats = ["alle"].concat(KATEGORIEN);
+      box.innerHTML = cats.map(function (c) {
+        var active = state.ui.filter === c ? " active" : "";
+        var label = c === "alle" ? "Alle" : c;
+        return '<span class="chip' + active + '" data-filter="' + esc(c) + '">' + esc(label) + "</span>";
+      }).join("");
+    }
+
+    function catIndex(cat) {
+      var i = KATEGORIEN.indexOf(cat);
+      return i < 0 ? 999 : i;
+    }
+
+    function renderBoard() {
+      var board = document.getElementById("board");
+      var filter = state.ui.filter;
+      var visible = state.cards.filter(function (c) {
+        return filter === "alle" || c.kategorie === filter;
+      });
+      visible.sort(function (a, b) {
+        return catIndex(a.kategorie) - catIndex(b.kategorie) || a.titel.localeCompare(b.titel, "de");
+      });
+
+      board.innerHTML = COLUMNS.map(function (col) {
+        var inCol = visible.filter(function (c) { return c.status === col.key; });
+        var cards = inCol.map(cardHtml).join("") ||
+          '<p class="empty">—</p>';
+        return '' +
+          '<div class="column" data-status="' + col.key + '">' +
+            '<div class="col-head" data-status="' + col.key + '">' +
+              '<span class="dot"></span><strong>' + esc(col.label) + "</strong>" +
+              '<span class="n">' + inCol.length + "</span>" +
+            "</div>" +
+            '<div class="cards">' + cards + "</div>" +
+          "</div>";
+      }).join("");
+    }
+
+    function cardHtml(c) {
+      var idx = COLUMNS.map(function (x) { return x.key; }).indexOf(c.status);
+      var checks = CHECKS.map(function (ch) {
+        var on = c.checks && c.checks[ch.key] ? " checked" : "";
+        return '<label><input type="checkbox" data-check="' + ch.key + '" data-id="' +
+          esc(c.id) + '"' + on + "> " + esc(ch.label) + "</label>";
+      }).join("");
+      return '' +
+        '<div class="card" draggable="true" data-id="' + esc(c.id) + '" data-status="' + c.status + '">' +
+          '<div class="card-top">' +
+            '<span class="titel">' + esc(c.titel) + "</span>" +
+            '<span class="card-controls no-print">' +
+              '<button class="small" data-move="-1" data-id="' + esc(c.id) + '"' + (idx <= 0 ? " disabled" : "") + ' title="zurück">◀</button>' +
+              '<button class="small" data-move="1" data-id="' + esc(c.id) + '"' + (idx >= COLUMNS.length - 1 ? " disabled" : "") + ' title="weiter">▶</button>' +
+              '<button class="small" data-del="' + esc(c.id) + '" title="löschen">✕</button>' +
+            "</span>" +
+          "</div>" +
+          '<div class="path">' + esc(c.pfad) + "</div>" +
+          '<span class="badge">' + esc(c.kategorie) + "</span>" +
+          '<div class="checks">' + checks + "</div>" +
+          '<textarea data-notiz="' + esc(c.id) + '" placeholder="Notiz …">' + esc(c.notiz) + "</textarea>" +
+        "</div>";
+    }
+
+    function renderRoadmap() {
+      var box = document.getElementById("roadmap");
+      box.innerHTML = KATEGORIEN.map(function (cat, i) {
+        var inCat = state.cards.filter(function (c) { return c.kategorie === cat; });
+        var done = inCat.filter(function (c) { return c.status === "verstanden"; }).length;
+        var pct = inCat.length ? Math.round((done / inCat.length) * 100) : 0;
+        var meta = state.roadmap[cat] || {};
+        return '' +
+          '<div class="phase">' +
+            '<div class="phase-top">' +
+              '<span class="num">' + (i + 1) + ".</span>" +
+              "<h3>" + esc(cat) + "</h3>" +
+              '<span class="frac">' + done + " / " + inCat.length + " · " + pct + "%</span>" +
+            "</div>" +
+            '<div class="bar"><span style="width:' + pct + '%"></span></div>' +
+            '<div class="phase-meta">' +
+              '<input type="text" data-phase-notiz="' + esc(cat) + '" placeholder="Notiz zur Phase …" value="' + esc(meta.notiz || "") + '">' +
+              '<label>Ziel: <input type="date" data-phase-ziel="' + esc(cat) + '" value="' + esc(meta.ziel || "") + '"></label>' +
+            "</div>" +
+          "</div>";
+      }).join("");
+    }
+
+    function renderSmart() {
+      var box = document.getElementById("smart");
+      if (!state.smart.length) {
+        box.innerHTML = '<p class="empty">Noch keine Ziele — „+ Ziel hinzufügen".</p>';
+        return;
+      }
+      var fields = [
+        ["s", "Spezifisch", "Was genau?"],
+        ["m", "Messbar", "Woran erkennbar?"],
+        ["a", "Attraktiv", "Wie erreichbar?"],
+        ["r", "Relevant", "Warum wichtig?"],
+        ["t", "Terminiert", "Bis wann?"]
+      ];
+      box.innerHTML = state.smart.map(function (g) {
+        var rows = fields.map(function (f) {
+          return '<div class="lab">' + f[1] + "<small>" + f[2] + "</small></div>" +
+            '<textarea data-goal="' + esc(g.id) + '" data-field="' + f[0] + '">' + esc(g[f[0]] || "") + "</textarea>";
+        }).join("");
+        return '' +
+          '<div class="goal">' +
+            '<div class="goal-top">' +
+              '<input type="text" data-goal="' + esc(g.id) + '" data-field="titel" value="' + esc(g.titel || "") + '" placeholder="Ziel-Titel">' +
+              '<button class="small no-print" data-del-goal="' + esc(g.id) + '">löschen</button>' +
+            "</div>" +
+            '<div class="smart-grid">' + rows + "</div>" +
+          "</div>";
+      }).join("");
+    }
+
+    function renderTodo() {
+      var ul = document.getElementById("todo-list");
+      if (!state.todos.length) {
+        ul.innerHTML = '<p class="empty">Keine Aufgaben.</p>';
+        return;
+      }
+      ul.innerHTML = state.todos.map(function (t) {
+        return '<li class="' + (t.done ? "done" : "") + '">' +
+          '<input type="checkbox" data-todo="' + esc(t.id) + '"' + (t.done ? " checked" : "") + ">" +
+          '<span class="txt">' + esc(t.text) + "</span>" +
+          '<button class="small ghost no-print" data-del-todo="' + esc(t.id) + '">✕</button>' +
+        "</li>";
+      }).join("");
+    }
+
+    function renderAll() {
+      renderProgress();
+      renderFilter();
+      renderBoard();
+      renderRoadmap();
+      renderSmart();
+      renderTodo();
+    }
+
+    // ---- Tabs -----------------------------------------------------------
+    function setTab(tab) {
+      state.ui.tab = tab;
+      save();
+      var btns = document.querySelectorAll("#tabs button");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle("active", btns[i].getAttribute("data-tab") === tab);
+      }
+      var views = document.querySelectorAll(".view");
+      for (var j = 0; j < views.length; j++) {
+        views[j].classList.toggle("active", views[j].getAttribute("data-tab") === tab);
+      }
+    }
+
+    document.getElementById("tabs").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-tab]");
+      if (b) { setTab(b.getAttribute("data-tab")); }
+    });
+
+    // ---- Board-Interaktion (Delegation) --------------------------------
+    var board = document.getElementById("board");
+    var draggedId = null;
+
+    board.addEventListener("click", function (e) {
+      var mv = e.target.closest("button[data-move]");
+      if (mv) {
+        var c = cardById(mv.getAttribute("data-id"));
+        if (!c) { return; }
+        var idx = COLUMNS.map(function (x) { return x.key; }).indexOf(c.status);
+        var ni = idx + parseInt(mv.getAttribute("data-move"), 10);
+        if (ni >= 0 && ni < COLUMNS.length) {
+          c.status = COLUMNS[ni].key;
+          save(); renderBoard(); renderProgress(); renderRoadmap();
+        }
+        return;
+      }
+      var del = e.target.closest("button[data-del]");
+      if (del) {
+        var card = cardById(del.getAttribute("data-del"));
+        if (card && window.confirm("Karte " + card.titel + " entfernen?")) {
+          state.cards = state.cards.filter(function (x) { return x.id !== card.id; });
+          save(); renderBoard(); renderProgress(); renderRoadmap();
+        }
+      }
+    });
+
+    board.addEventListener("change", function (e) {
+      var chk = e.target.closest('input[data-check]');
+      if (chk) {
+        var c = cardById(chk.getAttribute("data-id"));
+        if (!c) { return; }
+        c.checks[chk.getAttribute("data-check")] = chk.checked;
+        // Komfort: alle vier Haken -> automatisch "verstanden".
+        if (c.checks.gelesen && c.checks.verstanden && c.checks.nachgebaut && c.checks.test) {
+          c.status = "verstanden";
+        }
+        save(); renderBoard(); renderProgress(); renderRoadmap();
+      }
+    });
+
+    board.addEventListener("input", function (e) {
+      var ta = e.target.closest("textarea[data-notiz]");
+      if (ta) {
+        var c = cardById(ta.getAttribute("data-notiz"));
+        if (c) { c.notiz = ta.value; save(); }   // kein Re-Render -> Fokus bleibt
+      }
+    });
+
+    board.addEventListener("dragstart", function (e) {
+      var card = e.target.closest(".card");
+      if (card) { draggedId = card.getAttribute("data-id"); card.classList.add("dragging"); }
+    });
+    board.addEventListener("dragend", function (e) {
+      var card = e.target.closest(".card");
+      if (card) { card.classList.remove("dragging"); }
+      var cols = board.querySelectorAll(".column");
+      for (var i = 0; i < cols.length; i++) { cols[i].classList.remove("drag-over"); }
+    });
+    board.addEventListener("dragover", function (e) {
+      var col = e.target.closest(".column");
+      if (col) { e.preventDefault(); col.classList.add("drag-over"); }
+    });
+    board.addEventListener("dragleave", function (e) {
+      var col = e.target.closest(".column");
+      if (col && !col.contains(e.relatedTarget)) { col.classList.remove("drag-over"); }
+    });
+    board.addEventListener("drop", function (e) {
+      var col = e.target.closest(".column");
+      if (!col || !draggedId) { return; }
+      e.preventDefault();
+      var c = cardById(draggedId);
+      if (c) {
+        c.status = col.getAttribute("data-status");
+        save(); renderBoard(); renderProgress(); renderRoadmap();
+      }
+      draggedId = null;
+    });
+
+    document.getElementById("filter").addEventListener("click", function (e) {
+      var chip = e.target.closest(".chip[data-filter]");
+      if (chip) { state.ui.filter = chip.getAttribute("data-filter"); save(); renderFilter(); renderBoard(); }
+    });
+
+    document.getElementById("btn-add").addEventListener("click", function () {
+      var titel = window.prompt("Titel der neuen Karte?");
+      if (!titel) { return; }
+      var pfad = window.prompt("Pfad/Notiz (optional):", "") || "";
+      state.cards.push({
+        id: uid("custom"), kategorie: "Grundlagen", titel: titel, pfad: pfad,
+        status: "offen",
+        checks: { gelesen: false, verstanden: false, nachgebaut: false, test: false },
+        notiz: ""
+      });
+      save(); renderBoard(); renderProgress();
+    });
+
+    // ---- Roadmap-Interaktion -------------------------------------------
+    document.getElementById("roadmap").addEventListener("input", function (e) {
+      var n = e.target.closest("input[data-phase-notiz]");
+      var z = e.target.closest("input[data-phase-ziel]");
+      if (n) {
+        var ck = n.getAttribute("data-phase-notiz");
+        state.roadmap[ck] = state.roadmap[ck] || {};
+        state.roadmap[ck].notiz = n.value; save();
+      } else if (z) {
+        var zk = z.getAttribute("data-phase-ziel");
+        state.roadmap[zk] = state.roadmap[zk] || {};
+        state.roadmap[zk].ziel = z.value; save();
+      }
+    });
+
+    // ---- SMART-Interaktion ---------------------------------------------
+    var smartBox = document.getElementById("smart");
+    smartBox.addEventListener("input", function (e) {
+      var f = e.target.closest("[data-goal][data-field]");
+      if (!f) { return; }
+      var g = state.smart.filter(function (x) { return x.id === f.getAttribute("data-goal"); })[0];
+      if (g) { g[f.getAttribute("data-field")] = f.value; save(); }
+    });
+    smartBox.addEventListener("click", function (e) {
+      var d = e.target.closest("[data-del-goal]");
+      if (d && window.confirm("Ziel löschen?")) {
+        state.smart = state.smart.filter(function (x) { return x.id !== d.getAttribute("data-del-goal"); });
+        save(); renderSmart();
+      }
+    });
+    document.getElementById("btn-add-goal").addEventListener("click", function () {
+      state.smart.push({ id: uid("goal"), titel: "", s: "", m: "", a: "", r: "", t: "" });
+      save(); renderSmart();
+    });
+
+    // ---- ToDo-Interaktion ----------------------------------------------
+    var todoList = document.getElementById("todo-list");
+    todoList.addEventListener("change", function (e) {
+      var c = e.target.closest("input[data-todo]");
+      if (c) {
+        var t = state.todos.filter(function (x) { return x.id === c.getAttribute("data-todo"); })[0];
+        if (t) { t.done = c.checked; save(); renderTodo(); }
+      }
+    });
+    todoList.addEventListener("click", function (e) {
+      var d = e.target.closest("[data-del-todo]");
+      if (d) {
+        state.todos = state.todos.filter(function (x) { return x.id !== d.getAttribute("data-del-todo"); });
+        save(); renderTodo();
+      }
+    });
+    function addTodo() {
+      var inp = document.getElementById("todo-input");
+      var v = inp.value.trim();
+      if (!v) { return; }
+      state.todos.push({ id: uid("todo"), text: v, done: false });
+      inp.value = ""; save(); renderTodo();
+    }
+    document.getElementById("btn-add-todo").addEventListener("click", addTodo);
+    document.getElementById("todo-input").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { addTodo(); }
+    });
+
+    // ---- Kopf-Aktionen: PDF / Export / Import / Reset -------------------
+    document.getElementById("btn-pdf").addEventListener("click", function () { window.print(); });
+
+    document.getElementById("btn-export").addEventListener("click", function () {
+      var data = JSON.stringify(state, null, 2);
+      var blob = new Blob([data], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "kanban-c_algorithmen.json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    });
+
+    document.getElementById("btn-import").addEventListener("click", function () {
+      document.getElementById("file-import").click();
+    });
+    document.getElementById("file-import").addEventListener("change", function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) { return; }
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var s = JSON.parse(reader.result);
+          if (!s || !Array.isArray(s.cards)) { throw new Error("ungültig"); }
+          s.smart = Array.isArray(s.smart) ? s.smart : [];
+          s.todos = Array.isArray(s.todos) ? s.todos : [];
+          s.roadmap = s.roadmap || {};
+          s.ui = s.ui || { tab: "board", filter: "alle" };
+          state = s; save(); setTab(state.ui.tab || "board"); renderAll();
+        } catch (err) {
+          window.alert("Datei konnte nicht gelesen werden (kein gültiger Kanban-Export).");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    });
+
+    document.getElementById("btn-reset").addEventListener("click", function () {
+      if (window.confirm("Wirklich auf den Ausgangszustand zurücksetzen? Aller Fortschritt geht verloren.")) {
+        state = defaultState(); save(); setTab("board"); renderAll();
+      }
+    });
+
+    // ---- Start ----------------------------------------------------------
+    setTab(state.ui.tab || "board");
+    renderAll();
+  })();
+  </script>
+</body>
+</html>
