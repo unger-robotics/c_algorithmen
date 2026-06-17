@@ -26,6 +26,12 @@
     {"kategorie":"Mathematik","titel":"ggT (Euklid)","datei":"ggt_euklid.json"},
     {"kategorie":"Dynamische Programmierung","titel":"Fibonacci (DP)","datei":"fibonacci_dp.json"},
     {"kategorie":"Dynamische Programmierung","titel":"0/1-Rucksack","datei":"rucksack.json"},
-    {"kategorie":"Grundlagen","titel":"Schaltung (Logik)","datei":"schaltung.json"}
+    {"kategorie":"Grundlagen","titel":"Schaltung (Logik)","datei":"schaltung.json"},
+    {"kategorie":"Bitoperationen","titel":"UND (&)","datei":"bitweisesUND.json"},
+    {"kategorie":"Bitoperationen","titel":"ODER (|)","datei":"bitweisesODER.json"},
+    {"kategorie":"Bitoperationen","titel":"ODER (|) v02","datei":"bitweisesODER-v02.json"},
+    {"kategorie":"Bitoperationen","titel":"XOR (^)","datei":"bitweisesXOR.json"},
+    {"kategorie":"Bitoperationen","titel":"Einerkomplement (~)","datei":"bitweisesEinerkomplement.json"},
+    {"kategorie":"Bitoperationen","titel":"Verschiebung (<< >>)","datei":"bitweiseVerschiebung.json"}
   ]
 }

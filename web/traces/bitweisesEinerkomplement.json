@@ -1,0 +1,29 @@
+{
+"algo":"bitweisesEinerkomplement",
+"titel":"Einerkomplement (~)",
+"view":"bits",
+"init":{},
+"events":[
+{"t":"bitrow","id":0,"label":"Wert = 10","bits":[0,0,0,0,1,0,1,0]},
+{"t":"bitrow","id":1,"label":"~Wert","bits":[-1,-1,-1,-1,-1,-1,-1,-1]},
+{"t":"note","text":"Jedes Bit kippen: aus 0 wird 1, aus 1 wird 0."},
+{"t":"bitcol","col":0},
+{"t":"bitset","id":1,"col":0,"val":1},
+{"t":"bitcol","col":1},
+{"t":"bitset","id":1,"col":1,"val":1},
+{"t":"bitcol","col":2},
+{"t":"bitset","id":1,"col":2,"val":1},
+{"t":"bitcol","col":3},
+{"t":"bitset","id":1,"col":3,"val":1},
+{"t":"bitcol","col":4},
+{"t":"bitset","id":1,"col":4,"val":0},
+{"t":"bitcol","col":5},
+{"t":"bitset","id":1,"col":5,"val":1},
+{"t":"bitcol","col":6},
+{"t":"bitset","id":1,"col":6,"val":0},
+{"t":"bitcol","col":7},
+{"t":"bitset","id":1,"col":7,"val":1},
+{"t":"note","text":"~10 = 0b11110101 (unsigned 245). Als vorzeichenbehaftete 8-Bit-Zahl (+1) entspricht das -11."},
+{"t":"done"}
+]
+}

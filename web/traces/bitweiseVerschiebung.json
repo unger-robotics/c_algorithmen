@@ -1,0 +1,19 @@
+{
+"algo":"bitweiseVerschiebung",
+"titel":"Bitweise Verschiebung (<< >>)",
+"view":"bits",
+"init":{},
+"events":[
+{"t":"bitrow","id":0,"label":"x = 41","bits":[0,0,0,0,0,0,1,0,1,0,0,1]},
+{"t":"note","text":"x << 1 verdoppelt, x >> 1 halbiert: die Bits wandern um eine Stelle."},
+{"t":"note","text":"Linksschieben um 1: alle Bits eine Position nach links (× 2)."},
+{"t":"bitrow","id":1,"label":"x << 1 = 82","bits":[0,0,0,0,0,1,0,1,0,0,1,0]},
+{"t":"note","text":"Rechtsschieben um 1: alle Bits eine Position nach rechts (÷ 2)."},
+{"t":"bitrow","id":2,"label":"x >> 1 = 20","bits":[0,0,0,0,0,0,0,1,0,1,0,0]},
+{"t":"note","text":"Linksschieben um 2 (× 4)."},
+{"t":"bitrow","id":3,"label":"x << 2 = 164","bits":[0,0,0,0,1,0,1,0,0,1,0,0]},
+{"t":"note","text":"Linksschieben um 3 (× 8)."},
+{"t":"bitrow","id":4,"label":"x << 3 = 328","bits":[0,0,0,1,0,1,0,0,1,0,0,0]},
+{"t":"done"}
+]
+}

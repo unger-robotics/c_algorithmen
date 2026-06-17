@@ -48,6 +48,12 @@ run algorithmen/mathematik/ggt_euklid         Mathematik  "ggT (Euklid)"
 run algorithmen/dynprog/fibonacci_dp  "Dynamische Programmierung"  "Fibonacci (DP)"
 run algorithmen/dynprog/rucksack      "Dynamische Programmierung"  "0/1-Rucksack"
 run grundlagen/schaltung   Grundlagen  "Schaltung (Logik)"
+run grundlagen/bitweise/bitweisesUND             Bitoperationen  "UND (&)"
+run grundlagen/bitweise/bitweisesODER            Bitoperationen  "ODER (|)"
+run grundlagen/bitweise/bitweisesODER-v02        Bitoperationen  "ODER (|) v02"
+run grundlagen/bitweise/bitweisesXOR             Bitoperationen  "XOR (^)"
+run grundlagen/bitweise/bitweisesEinerkomplement Bitoperationen  "Einerkomplement (~)"
+run grundlagen/bitweise/bitweiseVerschiebung     Bitoperationen  "Verschiebung (<< >>)"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {

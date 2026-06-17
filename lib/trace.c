@@ -151,6 +151,17 @@ void trace_circuit(int zaehler, const int *schalter, int n, int lampe) {
   ev_begin("circuit"); ev_int("z", zaehler); ev_ints("s", schalter, n); ev_int("lampe", lampe); ev_end();
 }
 
+/* --- bits ---------------------------------------------------------------- */
+void trace_bitrow(int id, const char *label, const int *bits, int n) {
+  if (!tf) return;
+  ev_begin("bitrow"); ev_int("id", id); ev_str("label", label); ev_ints("bits", bits, n); ev_end();
+}
+void trace_bitset(int id, int col, int val) { if (!tf) return; ev_begin("bitset"); ev_int("id", id); ev_int("col", col); ev_int("val", val); ev_end(); }
+void trace_bitcol(int col)                   { if (!tf) return; ev_begin("bitcol"); ev_int("col", col); ev_end(); }
+
+/* --- logik (Wahrheitstabelle) -------------------------------------------- */
+void trace_truthrow(const int *werte, int n) { if (!tf) return; ev_begin("trow"); ev_ints("v", werte, n); ev_end(); }
+
 void trace_finish(void) {
   if (!tf) return;
   fputs("\n]\n}\n", tf);

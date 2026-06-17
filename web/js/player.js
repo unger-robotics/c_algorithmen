@@ -115,6 +115,9 @@
       case "setDist":     return "Distanz von Knoten " + ev.id + " = " + ev.dist + ".";
       case "path":        return "Kürzester Pfad: " + (ev.ids || []).join(" → ") + ".";
       case "circuit":     return "Kombination " + ev.z + " / 128 — Lampe " + (ev.lampe ? "AN" : "aus") + ".";
+      case "bitrow":      return "Reihe: " + ev.label + ".";
+      case "bitcol":      return "Diese Bit-Spalte verknüpfen.";
+      case "bitset":      return "Ergebnisbit = " + ev.val + ".";
       default:            return ev.t;
     }
   }

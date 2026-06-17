@@ -69,6 +69,14 @@ void trace_path(const int *ids, int n);
 /* view "schaltung": eine Schalterstellung (n Schalter 0/1) + Lampenzustand */
 void trace_circuit(int zaehler, const int *schalter, int n, int lampe);
 
+/* view "bits": Bit-Reihen (Bit-Wert -1 = leer/unbekannt) */
+void trace_bitrow(int id, const char *label, const int *bits, int n);
+void trace_bitset(int id, int col, int val);
+void trace_bitcol(int col);
+
+/* view "logik": eine Zeile einer Wahrheitstabelle */
+void trace_truthrow(const int *werte, int n);
+
 void trace_finish(void);
 
 #ifdef __cplusplus
