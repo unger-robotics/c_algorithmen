@@ -35,8 +35,11 @@ int main(void){
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
 		//Eingabe ein Zeichen
+		// Idiom: (clear_puffer = getchar()) != EOF && clear_puffer != '\n' liest die
+		// restlichen Zeichen bis zum Zeilenende und räumt so den Eingabepuffer leer.
+		// Zusammen mit error/check wird gefragt, bis die Eingabe gültig ist.
 		do{
-			printf("Eingabe1 - Zeichen: "); 
+			printf("Eingabe1 - Zeichen: ");
 			check = scanf("%c",&zeichen1);
 			if( !(((zeichen1 >= 'A') && (zeichen1 <= 'Z')) || ((zeichen1 >= 'a') && (zeichen1 <= 'z'))) )
 				{error = true; printf("	Fehler! kein Buchstabe\n"); }	

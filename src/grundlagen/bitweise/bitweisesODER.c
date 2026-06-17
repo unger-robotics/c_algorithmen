@@ -1,5 +1,7 @@
 /* ju - 15.1.18 - bitweisesODER.c
    bitweises ODER (|): Ergebnisbit ist 1, wenn mindestens ein Eingangsbit 1 ist.
+   Wahrheitstabelle:  0|0=0   0|1=1   1|0=1   1|1=1
+   Typische Anwendung: einzelne Bits gezielt setzen.
 */
 #include "bitsviz.h"
 

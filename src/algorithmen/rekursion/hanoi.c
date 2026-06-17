@@ -20,12 +20,12 @@ static void hanoi(int n, char von, char nach, char ueber, int parent, const char
     zuege++;
     return;
   }
-  hanoi(n - 1, von, ueber, nach, id, "left");
+  hanoi(n - 1, von, ueber, nach, id, "left");   // 1. obere n-1 Scheiben auf den Hilfsstab
   char buf[64];
   snprintf(buf, sizeof buf, "Scheibe %d: %c -> %c", n, von, nach);
-  trace_note(buf);
+  trace_note(buf);                              // 2. die größte Scheibe direkt ans Ziel
   zuege++;
-  hanoi(n - 1, ueber, nach, von, id, "right");
+  hanoi(n - 1, ueber, nach, von, id, "right");  // 3. die n-1 Scheiben vom Hilfsstab nachziehen
 }
 
 int main(int argc, char **argv) {

@@ -10,15 +10,19 @@ static int a[]   = {5, 2, 8, 1, 9, 3, 7, 4, 6};
 static int n     = (int)(sizeof a / sizeof a[0]);
 static int tmp[16];
 
+/* Führt die zwei bereits sortierten Hälften [lo..mid] und [mid+1..hi] zusammen. */
 static void merge(int lo, int mid, int hi) {
-  for (int k = lo; k <= hi; k++) tmp[k] = a[k];
-  int i = lo, j = mid + 1, k = lo;
+  for (int k = lo; k <= hi; k++) tmp[k] = a[k];   // beide Hälften in den Puffer kopieren
+  int i = lo, j = mid + 1, k = lo;                // i: linke Hälfte, j: rechte Hälfte, k: Schreibposition
+  // Solange in beiden Hälften noch etwas liegt, das jeweils kleinere Element nach
+  // vorne schreiben. "<=" nimmt bei Gleichstand das linke zuerst -> Mergesort ist stabil.
   while (i <= mid && j <= hi) {
     trace_compare(i, j);
     if (tmp[i] <= tmp[j]) { a[k] = tmp[i]; trace_set(k, tmp[i]); i++; }
     else                  { a[k] = tmp[j]; trace_set(k, tmp[j]); j++; }
     k++;
   }
+  // Eine Hälfte ist erschöpft; der Rest der anderen ist schon sortiert und wird angehängt.
   while (i <= mid) { a[k] = tmp[i]; trace_set(k, tmp[i]); i++; k++; }
   while (j <= hi)  { a[k] = tmp[j]; trace_set(k, tmp[j]); j++; k++; }
 }

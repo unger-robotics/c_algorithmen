@@ -1,5 +1,6 @@
 /* ju -- 26-Dez-18 -- logik-v02.c
    Logik in C: UND (&) - ODER (|) - XOR (^) - NEG (!)  (Textausgabe)
+   Wie logik.c, aber mit schlichter Spalten-Textausgabe statt Markdown-Tabelle.
 */
 #include <stdio.h>
 #include "trace.h"

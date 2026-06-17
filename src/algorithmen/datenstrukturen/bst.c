@@ -12,12 +12,15 @@ static int idc = 0;
 
 static Node *einfuegen(Node *root, int v, int parentId, const char *seite) {
   if (!root) {
+    // Leerer Teilbaum erreicht -> genau hier gehört der neue Wert hin.
     Node *n = malloc(sizeof *n);
     n->val = v; n->id = idc++; n->l = n->r = NULL;
     trace_node(n->id, v, parentId, seite);
     return n;
   }
   trace_compare_node(root->id, v);            /* Vergleichspfad zeigen */
+  // BST-Regel: kleinere Werte links, größere rechts weitersuchen. So bleibt der
+  // Baum sortiert und der Pfad von der Wurzel ist eindeutig.
   if (v < root->val) root->l = einfuegen(root->l, v, root->id, "left");
   else               root->r = einfuegen(root->r, v, root->id, "right");
   return root;

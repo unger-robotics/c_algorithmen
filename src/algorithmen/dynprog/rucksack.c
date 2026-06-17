@@ -23,6 +23,8 @@ int main(int argc, char **argv) {
     char buf[80];
     snprintf(buf, sizeof buf, "Gegenstand %d: Gewicht %d, Wert %d", g + 1, gewicht[g], wert[g]);
     trace_note(buf);
+    // Rückwärts (W -> gewicht[g]): so liest dp[w-gewicht[g]] noch den Stand OHNE
+    // den aktuellen Gegenstand -> jeder Gegenstand wird höchstens einmal genommen.
     for (int w = W; w >= gewicht[g]; w--) {
       trace_compare(w, w - gewicht[g]);
       int kandidat = dp[w - gewicht[g]] + wert[g];

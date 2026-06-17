@@ -1,5 +1,7 @@
 /* ju - 15.1.18 - bitweisesXOR.c
    bitweises XOR (^): Ergebnisbit ist 1, wenn die Eingangsbits verschieden sind.
+   Wahrheitstabelle:  0^0=0   0^1=1   1^0=1   1^1=0
+   Typische Anwendung: einzelne Bits umschalten (kippen).
 */
 #include "bitsviz.h"
 

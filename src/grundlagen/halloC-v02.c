@@ -1,4 +1,6 @@
 // ju -- 26-Dez-18 -- halloC-v02.c
+// Hallo-Welt als Vorlage: zeigt typische #includes, die eigene Bibliothek
+// (meineFkt.h) und ein paar Konstanten (Lichtgeschwindigkeit, PI, e).
 #include <stdio.h>
 #include <stdlib.h>   // rand()
 #include <time.h>     // time()

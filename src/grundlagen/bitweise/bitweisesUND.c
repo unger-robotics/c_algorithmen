@@ -1,5 +1,7 @@
 /* ju - 15.1.18 - bitweisesUND.c
    bitweises UND (&): Ergebnisbit ist 1, nur wenn beide Eingangsbits 1 sind.
+   Wahrheitstabelle:  0&0=0   0&1=0   1&0=0   1&1=1
+   Typische Anwendung: einzelne Bits ausblenden (Maskieren).
 */
 #include "bitsviz.h"
 

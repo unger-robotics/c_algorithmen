@@ -15,8 +15,11 @@ int main(void){
 
 	do{
 		// Eingabe Zahlen
+		// Idiom: (clear_puffer = getchar()) != EOF && clear_puffer != '\n' räumt den
+		// Eingabepuffer bis zum Zeilenende; die Schleife wiederholt sich bei
+		// falschem Typ (check != 1) oder Wert außerhalb 0..255.
 		do{
-			printf("Eingabe1 - Dezimalzahl von 0 bis 255: "); 
+			printf("Eingabe1 - Dezimalzahl von 0 bis 255: ");
 			check = scanf("%d",&dez_zahl1);
 			if((check != 1) || (dez_zahl1 > 255))
 				printf("	Fehler! Zahl\n");

@@ -17,11 +17,12 @@ int main(int argc, char **argv) {
   trace_note("Muster \"GOR\" an jeder Position anlegen und vergleichen.");
 
   int pos = -1;
-  for (int i = 0; i + m <= n; i++) {
+  for (int i = 0; i + m <= n; i++) {   // i = Startposition, an der das Muster angelegt wird
     trace_pointer("start", i);
     int passt = 1;
     for (int j = 0; j < m; j++) {
       trace_compare(i + j, i + j);
+      // schon ein ungleiches Zeichen genügt: Muster um eine Position weiterschieben.
       if (text[i + j] != muster[j]) { passt = 0; break; }
     }
     if (passt) {

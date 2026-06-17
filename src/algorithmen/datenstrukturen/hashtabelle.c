@@ -23,10 +23,10 @@ int main(int argc, char **argv) {
   int n = (int)(sizeof keys / sizeof keys[0]);
 
   for (int i = 0; i < n; i++) {
-    int k = keys[i], h = k % B, id = idc++;
+    int k = keys[i], h = k % B, id = idc++;   // h = Bucket-Index aus der Hashfunktion h(k)=k mod B
     id2key[id] = k;
     trace_node(id, k, -1, NULL);
-    bucket_ids[h][blen[h]++] = id;
+    bucket_ids[h][blen[h]++] = id;             // an die Kette von Bucket h anhängen (Chaining bei Kollision)
     trace_bucket(h, bucket_ids[h], blen[h]);
   }
 

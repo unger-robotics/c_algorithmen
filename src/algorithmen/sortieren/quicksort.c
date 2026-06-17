@@ -20,14 +20,18 @@ static void quicksort(int lo, int hi) {
 
   int pivot = a[hi];
   trace_pointer("pivot", hi);        /* Pivot bleibt während der Partition markiert */
+  // i markiert das Ende der "<= Pivot"-Zone. Invariante: alles bei lo..i ist <= Pivot.
   int i = lo - 1;
   for (int j = lo; j < hi; j++) {
     trace_compare(j, hi);
     if (a[j] <= pivot) {
+      // a[j] gehört in die kleine Zone: Zone um eins wachsen lassen und a[j] hineintauschen.
       i++;
       if (i != j) tausche(i, j);
     }
   }
+  // Hinter der kleinen Zone (Index i+1) ist der endgültige Platz des Pivots:
+  // links davon steht alles <= Pivot, rechts alles > Pivot.
   int p = i + 1;
   tausche(p, hi);                    /* Pivot an seine endgültige Position */
   trace_mark_sorted(p);

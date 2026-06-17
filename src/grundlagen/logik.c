@@ -1,5 +1,7 @@
 /* ju - 15.1.18 - logik.c
    Logik in C: UND (&) - ODER (|) - XOR (^) - NEG (!)
+   Verknüpfungen der Wahrheitswerte 0 (falsch) und 1 (wahr). Das Programm zählt
+   alle Eingangskombinationen durch und stellt sie als Wahrheitstabelle dar.
 */
 #include <stdio.h>
 #include "trace.h"

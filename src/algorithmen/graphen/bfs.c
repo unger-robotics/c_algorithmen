@@ -20,9 +20,11 @@ int main(int argc, char **argv) {
   queue[tail++] = start; besucht[start] = 1;
   while (head < tail) {
     trace_frontier(queue + head, tail - head);   /* aktuelle Warteschlange */
-    int u = queue[head++];
+    int u = queue[head++];          // vorderstes Element (FIFO) -> Ebenen-Reihenfolge
     trace_visit(u);
     reihenfolge[rlen++] = u;
+    // Wichtig: schon beim Einreihen als besucht markieren, sonst landet ein Knoten
+    // über mehrere Nachbarn mehrfach in der Queue.
     for (int v = 0; v < GN; v++)
       if (g_adj[u][v] && !besucht[v]) { besucht[v] = 1; queue[tail++] = v; }
   }

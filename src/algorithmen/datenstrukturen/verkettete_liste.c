@@ -22,6 +22,8 @@ int main(int argc, char **argv) {
     Knoten *k = malloc(sizeof *k);
     k->wert = werte[i]; k->id = i; k->next = NULL;
     trace_node(i, werte[i], -1, NULL);
+    // Hinten anhängen: next des bisher letzten Knotens auf den neuen zeigen lassen.
+    // Beim ersten Knoten gibt es noch kein "last" -> er wird zum Kopf der Liste.
     if (last) { last->next = k; trace_edge(last->id, i); } else kopf = k;
     last = k;
   }

@@ -12,6 +12,8 @@ static void dfs(int u) {
   besucht[u] = 1;
   trace_visit(u);
   reihenfolge[rlen++] = u;
+  // In den ersten unbesuchten Nachbarn absteigen und erst danach den nächsten
+  // probieren. Die Rekursion ist hier der (implizite) Stack der Tiefensuche.
   for (int v = 0; v < GN; v++)
     if (g_adj[u][v] && !besucht[v]) dfs(v);
 }

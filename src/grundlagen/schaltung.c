@@ -25,7 +25,8 @@ int main(int argc, char **argv) {
       for (int s5 = 0; s5 <= 1; s5++)
        for (int s6 = 0; s6 <= 1; s6++)
         for (int s7 = 0; s7 <= 1; s7++) {
-          /* Schaltstellung berechnen */
+          /* Schaltstellung auswerten. && bindet stärker als ||; die Klammern
+             machen die Gruppierung in Reihen- und Parallelschaltung explizit. */
           lampe = (s1 || s2) && ((s3 && s4) || ((s5 || s6) && s7));
           schaltkombination++;
           int s[7] = { s1, s2, s3, s4, s5, s6, s7 };

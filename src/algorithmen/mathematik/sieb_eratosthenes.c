@@ -20,6 +20,8 @@ int main(int argc, char **argv) {
     if (a[p - 2] == 0) continue;              /* schon gestrichen */
     trace_pointer("p", p - 2);
     trace_mark_sorted(p - 2);                 /* p ist prim */
+    // Erst ab p*p streichen: kleinere Vielfache (2p, 3p, …) hat bereits eine
+    // kleinere Primzahl erledigt.
     for (int m = p * p; m <= N; m += p) {
       if (a[m - 2] != 0) { a[m - 2] = 0; trace_set(m - 2, 0); }
     }

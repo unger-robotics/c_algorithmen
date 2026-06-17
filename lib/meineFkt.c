@@ -13,8 +13,8 @@ int fac( int i ) {
 int quersumme(int z, int b) {//Definition einer Funktion
   int q = 0;
   while(z > 0){
-    q += z % b;
-    z /= b;
+    q += z % b;   // letzte Ziffer zur Basis b aufaddieren
+    z /= b;       // und diese Ziffer abschneiden
   }
   return q;
 }
