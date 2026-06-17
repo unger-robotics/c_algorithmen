@@ -50,6 +50,12 @@ jobs:
             c++ $SAN -std=c++17 -Ilib -o "$b" "$f" -lm
             echo "run: $f"; "$b" < /dev/null > /dev/null
           done
+          # Unit-Tests (tests/unit) ebenfalls unter den Sanitizern (inkl. LSan).
+          for f in $(git ls-files 'tests/unit/*.c'); do
+            b=/tmp/san/$(echo "$f" | tr '/' '_')
+            cc $SAN -std=c17 -Ilib -o "$b" "$f" lib/trace.c lib/meineFkt.c -lm
+            echo "run-test: $f"; "$b" < /dev/null > /dev/null
+          done
           echo "Sanitizer: alle Programme sauber."
 
   cppcheck:

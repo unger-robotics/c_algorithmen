@@ -76,6 +76,29 @@ Die Visualisierung wählt anhand der Sicht (`view`) im Trace einen Renderer:
 [docs/trace-schema.md](docs/trace-schema.md) beschrieben; neue Algorithmen, die
 eine vorhandene Sicht nutzen, brauchen keine Frontend-Änderung.
 
+## Tests
+
+Zwei lokal aufrufbare Test-Kategorien, die auch in der CI laufen:
+
+```sh
+make test        # Logik: assert-basierte Unit-Tests (tests/unit/) — Exit≠0 bei Fehler
+make memcheck    # Speicher: alle Programme + Tests unter ASan/UBSan (LSan nur Linux)
+```
+
+- **Logik** — `tests/unit/*.c` sind eigenständige assert-Programme für die
+  `lib/`-API (`meineFkt`-Arithmetik, `trace`-Lebenszyklus). Die Algorithmen in
+  `src/` selbst sind bewusst self-contained (lokale/`static`-Logik) und werden
+  über ihre Terminal-Ausgabe gegen eingecheckte Referenzen geprüft
+  (`tools/check-golden.sh`).
+- **Speicher** — `tools/check-memory.sh` baut jedes Programm und jeden Unit-Test
+  mit Address-/UndefinedBehavior-Sanitizer und führt es aus (Demos auch mit
+  `--trace`). Lecks (LeakSanitizer) werden nur unter Linux erkannt; auf macOS
+  greifen lokal ASan/UBSan, die Leak-Prüfung übernimmt die CI.
+
+Weitere Gates: `tools/check-hygiene.sh` (Konventionen), `tools/check-traces.py`
+(Trace-Schema), ESLint + Playwright fürs Frontend (`npm run lint`,
+`npm run test:e2e`).
+
 ## Projektstruktur
 
 ```
@@ -86,7 +109,8 @@ eine vorhandene Sicht nutzen, brauchen keine Frontend-Änderung.
 │   ├── algorithmen/    die Algorithmen-Sammlung (thematisch gruppiert)
 │   └── grundlagen/     ältere C-Lernbeispiele (Bitoperationen, Logik …)
 ├── web/                interaktiver Player (HTML/CSS/JS) + traces/
-├── tools/gen-traces.sh erzeugt alle Traces + web/traces/manifest.json
+├── tests/              golden/ (Terminal-Ausgaben), unit/ (C-Unit-Tests), e2e/ (Player)
+├── tools/              gen-traces.sh, check-{golden,traces,hygiene,memory}.sh
 └── docs/               Trace-Schema, Tabellen, Bilder
 ```
 

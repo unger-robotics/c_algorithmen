@@ -26,7 +26,7 @@ while IFS= read -r f; do
 done < /tmp/hy_text.txt
 
 # 3. Quellcode-Konventionen
-git ls-files 'src/**/*.c' 'src/**/*.cpp' 'src/**/*.h' 'lib/*.c' 'lib/*.h' > /tmp/hy_src.txt
+git ls-files 'src/**/*.c' 'src/**/*.cpp' 'src/**/*.h' 'lib/*.c' 'lib/*.h' 'tests/unit/*.c' > /tmp/hy_src.txt
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   head -2 "$f" | grep -q "ju" || note "Header-Kommentarzeile (ju) fehlt: $f"

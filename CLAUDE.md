@@ -72,20 +72,69 @@ vorhandene `view` nutzt, muss man **nicht** im Frontend anfassen.
 - `src/algorithmen/{sortieren,suchen,datenstrukturen,graphen,rekursion,strings,mathematik,dynprog}/`
 - `src/grundlagen/` — ältere Lernbeispiele (Bitoperationen in `bitweise/`, Logik …); portabel, ohne Trace
 - `web/` — `index.html`, `css/`, `js/`, `traces/`
-- `tools/gen-traces.sh` — Trace-/Manifest-Generator (Tabelle der Algorithmen)
+- `tools/` — `gen-traces.sh` (Trace-/Manifest-Generator), `check-traces.py`,
+  `check-golden.sh`, `check-hygiene.sh` (die CI-Gates, lokal ausführbar)
+- `tests/` — `golden/*.txt` (erwartete Terminal-Ausgaben + `PROGRAMS`-Liste),
+  `unit/*.c` (assert-basierte C-Unit-Tests für `lib/`, je eigenes `main()`),
+  `e2e/player.spec.js` (Playwright-Player-Test)
 - `docs/` — `trace-schema.md`, `tabellen/`, `bilder/`
+- Tooling-Konfig im Wurzelverzeichnis: `.clang-format`/`.clang-tidy` (informativ),
+  `.editorconfig`, `eslint.config.js`, `playwright.config.js`, `.github/workflows/`
 
-## Verifikation (End-to-End)
+## Verifikation, Tests & CI-Gates
 
-1. `make all` ohne neue Warnungen.
-2. `make run NAME=...` → Terminal-Ausgabe korrekt (Grundlagen: Vergleich mit dem
-   `/* Ausgabe */`-Kommentar in der Datei).
-3. `make trace ...` → `python3 -m json.tool <datei>` validiert das JSON.
-4. `make web`, Browser/Playwright: Algorithmus wählen, abspielen, Endzustand
-   prüfen (sortiert / Treffer / Pfad), keine JS-Konsolenfehler.
+Vier CI-Workflows (`.github/workflows/`) laufen bei jedem Push/PR. Vor dem
+Commit lokal gegenprüfen — die Skripte **sind** die Gates:
+
+```sh
+sh tools/check-hygiene.sh        # harte Invarianten (s. u.) — blockierend
+make test                        # Logik: assert-Unit-Tests aus tests/unit/ (Exit≠0 = Fehler)
+make memcheck                    # Speicher: ASan/UBSan-Lauf aller Programme + Tests (LSan nur Linux)
+make all && sh tools/check-golden.sh   # deterministische Terminal-Ausgaben
+make traces && python3 tools/check-traces.py   # Trace-Schema/Manifest/Vollständigkeit
+npm ci && npm run lint           # ESLint über web/js + tests/e2e
+npm run test:e2e                 # Playwright (startet python3-Server selbst)
+```
+
+`tests/unit/*.c` liegen bewusst **außerhalb** von `src/` (das Auto-Discovery baut
+nur `src/**`): sie sind kein `make all`-Ziel und bekommen kein Trace/Golden/Manifest.
+Neue Unit-Tests dort werden von `make test` und `make memcheck` automatisch erfasst.
+
+Was die Gates erzwingen (Reihenfolge der Workflows: `build`, `analyze`,
+`hygiene`, `web`):
+- **Golden-Tests** (`build`): die Terminal-Ausgabe jedes Programms in
+  `tests/golden/PROGRAMS` muss byte-genau zur eingecheckten `tests/golden/*.txt`
+  passen. Ändert sich eine Ausgabe **absichtlich**, neu schreiben mit
+  `sh tools/check-golden.sh --update` und die Diffs mitcommitten. Interaktive
+  Programme (`eingabe-user-pruefen*`) stehen nicht in `PROGRAMS`.
+- **Demo-Traces in sync** (`build`): `git diff --exit-code -- web/traces` nach
+  `make traces` muss leer sein — eingecheckte Traces sind Teil des Tests.
+  Einzige Ausnahme: `mitZuruecklegen.json` (nutzt `rand()`, libc-abhängig).
+- **Strenge Warnungen** (`analyze`): Build mit gcc **und** clang unter
+  `-Werror -Wshadow -Wconversion -Wsign-conversion`. Lokal vor dem Commit:
+  `make all WARN="-Wall -Wextra -Wno-missing-field-initializers -Wshadow -Wconversion -Wsign-conversion -Werror"`.
+- **Sanitizer** (`analyze`): ASan+UBSan+LSan, jedes Programm **und** jeder
+  `tests/unit/`-Test normal sowie mit `--trace` ausgeführt — Lecks und UB sind
+  Fehler. Lokales Pendant: `make memcheck` (= `tools/check-memory.sh`); LSan läuft
+  nur unter Linux, auf macOS greifen lokal nur ASan/UBSan (Lecks fängt erst die CI).
+- **Unit-Tests** (`build`): `make test` baut/läuft `tests/unit/*.c`. Decken die
+  `lib/`-API ab (`meineFkt`-Arithmetik, `trace`-Lebenszyklus) — der Lehrcode in
+  `src/` ist `static`/global gekoppelt und nicht isoliert testbar.
+- **`check-traces.py`** prüft mehr als JSON-Wohlgeformtheit: Pflichtfelder,
+  erlaubte `view` (muss einen registrierten Renderer haben), ein abschließendes
+  `done`-Event, Manifest-Konsistenz und dass **jede** Quelle mit `trace_begin(`
+  einen Trace hat (sonst fehlt die `run`-Zeile in `gen-traces.sh`).
+- `clang-format` und `clang-tidy` laufen nur **informativ** (`continue-on-error`):
+  der Lehrcode ist bewusst von Hand formatiert (z. B. ausgerichtete Swaps
+  `int t=a[i]; a[i]=a[j]; a[j]=t;`) — **nicht** blind reformatieren.
 
 ## Konventionen
 
 - Header-Kommentarzeile je Datei: `// ju -- 2026 -- <datei>` (Stil aus dem Projekt).
 - Deutsche Kommentare und Bezeichner (mit Umlauten), UTF-8, Zeilenende LF, 2 Leerzeichen Einzug.
 - Algorithmus-Dateien sind self-contained und lesbar gehalten — sie sind das Lehrmaterial.
+- `check-hygiene.sh` erzwingt hart (CI-blockierend): keine eingecheckten
+  `build/`-Artefakte, LF (kein CRLF) + gültiges UTF-8 in allen Textdateien und
+  in jeder Quelle (`.c/.cpp/.h`) die `ju`-Header-Zeile, kein Trailing-Whitespace,
+  abschließende Newline. Neue Grundlagen-Beispiele behalten den
+  `/* Ausgabe */`-Kommentar als dokumentierte Soll-Ausgabe.

@@ -34,6 +34,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Bauen
         run: make all
+      - name: Unit-Tests (Logik)
+        run: make test
       - name: Traces erzeugen (jedes Programm muss sauber durchlaufen)
         run: make traces
       - name: Alle Traces sind gültiges JSON
