@@ -1,5 +1,4 @@
-// ju -- https://bw1.eu -- 26-Dez-18  -- halloC-v02.c 
-/* ju - 14.1.18 halloWelt.c */
+// ju -- 26-Dez-18 -- halloC-v02.c
 #include <stdio.h>
 #include <stdlib.h>   // rand()
 #include <time.h>     // time()

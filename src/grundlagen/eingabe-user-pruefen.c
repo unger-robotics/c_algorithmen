@@ -1,4 +1,4 @@
-/* ju -- 5-12-2016 -- eingabe_user_pruefen.c */
+/* ju -- 5-12-2016 -- eingabe-user-pruefen.c */
 /* eingabe_user_pruefen 
 
 User - Eingabepruefung

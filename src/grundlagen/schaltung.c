@@ -1,4 +1,4 @@
-/* // ju -- https://bw1.eu -- 26-Dez-18  -- schaltkombination-v02.c 
+/* ju -- 26-Dez-18 -- schaltung.c
    Berechnet Schaltkombinationen einer elektrischen Schaltung
 */
 #include <stdio.h>

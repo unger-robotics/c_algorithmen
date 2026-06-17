@@ -1,4 +1,4 @@
-/* // ju -- https://bw1.eu -- 26-Dez-18  -- eingabe-user-pruefen-v02.c */
+/* ju -- 26-Dez-18 -- eingabe-user-pruefen-v02.c */
 /*
   User - Eingabepruefung
   - Wahr, wenn ckeck != 0 (richtiger Datentyp, nur bei Zahlen!)

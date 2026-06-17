@@ -1,3 +1,6 @@
+/* ju -- integer.c
+   Wertebereiche der Ganzzahl-Typen aus limits.h (CHAR/INT/LONG, signed/unsigned)
+*/
 #include <stdio.h>
 #include <limits.h>
 
