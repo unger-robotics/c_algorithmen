@@ -16,7 +16,9 @@ schreiben sie ihren Ablauf als JSON-Trace, den ein interaktiver Web-Player
 ## Build & Ausführen
 
 macOS/clang, **GNU Make 3.81** (Apple) — das Makefile ist bewusst konservativ
-(nur `find`/`patsubst`, keine modernen Make-Funktionen).
+(nur `find`/`patsubst`, keine modernen Make-Funktionen). Standards: `-std=c17` /
+`-std=c++17`, `-O0 -g`, Warnungen `-Wall -Wextra -Wno-missing-field-initializers`,
+gelinkt gegen `-lm`.
 
 ```sh
 make                 # Auto-Discovery: jedes src/**/*.c|cpp -> build/<pfad>
@@ -30,7 +32,10 @@ make clean
 Nicht offensichtlich:
 - **Keine handgepflegte Ziel-Liste** mehr — `find src` entdeckt alle Quellen.
   Ein neuer Algorithmus wird automatisch gebaut; für einen Demo-Trace muss aber
-  eine `run`-Zeile in `tools/gen-traces.sh` ergänzt werden.
+  eine `run`-Zeile in `tools/gen-traces.sh` ergänzt werden. Der Trace-Dateiname
+  ergibt sich aus dem **`basename` des Quellpfads**, nicht aus der `view` — daher
+  `mitZuruecklegen.c` → `mitZuruecklegen.json` (obwohl View `lotto`). Die
+  Reihenfolge der `run`-Zeilen ist die Anzeige-Reihenfolge im Player.
 - `lib/meineFkt.c` und `lib/trace.c` werden in **jedes C-Programm** mitkompiliert
   (kein separates Linken). C++-Beispiele haben eine eigene Regel ohne die Libs.
 - Verschachtelte `build/`-Pfade brauchen `mkdir -p $(dir $@)` pro Regel (drin).
