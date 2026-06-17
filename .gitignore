@@ -1,5 +1,13 @@
-# ordner/
-# !file.md = Ausnahme, wird versioniert
-!.gitignore
-*.exe
-*.x
+# Build-Artefakte
+build/
+*.o
+*.out
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*~
+
+# Hinweis: web/traces/*.json bleiben versioniert (Demo-Daten fuer den Player)
