@@ -28,6 +28,8 @@
     {"kategorie":"Dynamische Programmierung","titel":"0/1-Rucksack","datei":"rucksack.json"},
     {"kategorie":"Grundlagen","titel":"Schaltung (Logik)","datei":"schaltung.json"},
     {"kategorie":"Grundlagen","titel":"Lotto 6 aus 49","datei":"mitZuruecklegen.json"},
+    {"kategorie":"Grundlagen","titel":"Logik (Wahrheitstabelle)","datei":"logik.json"},
+    {"kategorie":"Grundlagen","titel":"Logik v02 (Textausgabe)","datei":"logik-v02.json"},
     {"kategorie":"Bitoperationen","titel":"UND (&)","datei":"bitweisesUND.json"},
     {"kategorie":"Bitoperationen","titel":"ODER (|)","datei":"bitweisesODER.json"},
     {"kategorie":"Bitoperationen","titel":"ODER (|) v02","datei":"bitweisesODER-v02.json"},

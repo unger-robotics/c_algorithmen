@@ -1,0 +1,14 @@
+{
+"algo":"logik",
+"titel":"Logik: UND / ODER / XOR / NEG",
+"view":"logik",
+"init":{},
+"events":[
+{"t":"note","text":"Wahrheitstabelle: alle Eingangskombinationen E1,E2 durchgehen."},
+{"t":"trow","v":[0,0,0,0,0,1]},
+{"t":"trow","v":[0,1,0,1,1,1]},
+{"t":"trow","v":[1,0,0,1,1,0]},
+{"t":"trow","v":[1,1,1,1,0,0]},
+{"t":"done"}
+]
+}

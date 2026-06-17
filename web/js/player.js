@@ -120,6 +120,8 @@
       case "bitrow":      return "Reihe: " + ev.label + ".";
       case "bitcol":      return "Diese Bit-Spalte verknüpfen.";
       case "bitset":      return "Ergebnisbit = " + ev.val + ".";
+      case "trow":        return "E1=" + ev.v[0] + ", E2=" + ev.v[1] + "  →  UND=" + ev.v[2] +
+                                 ", ODER=" + ev.v[3] + ", XOR=" + ev.v[4] + ", NEG=" + ev.v[5] + ".";
       default:            return ev.t;
     }
   }

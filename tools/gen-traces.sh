@@ -49,6 +49,8 @@ run algorithmen/dynprog/fibonacci_dp  "Dynamische Programmierung"  "Fibonacci (D
 run algorithmen/dynprog/rucksack      "Dynamische Programmierung"  "0/1-Rucksack"
 run grundlagen/schaltung      Grundlagen  "Schaltung (Logik)"
 run grundlagen/mitZuruecklegen Grundlagen  "Lotto 6 aus 49"
+run grundlagen/logik          Grundlagen  "Logik (Wahrheitstabelle)"
+run grundlagen/logik-v02      Grundlagen  "Logik v02 (Textausgabe)"
 run grundlagen/bitweise/bitweisesUND             Bitoperationen  "UND (&)"
 run grundlagen/bitweise/bitweisesODER            Bitoperationen  "ODER (|)"
 run grundlagen/bitweise/bitweisesODER-v02        Bitoperationen  "ODER (|) v02"
