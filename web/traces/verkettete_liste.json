@@ -1,0 +1,25 @@
+{
+"algo":"verkettete_liste",
+"titel":"Verkettete Liste",
+"view":"tree",
+"init":{"layout":"chain-h"},
+"events":[
+{"t":"note","text":"Verkettete Liste: Knoten per next-Zeiger anhängen, dann suchen."},
+{"t":"addNode","id":0,"val":4},
+{"t":"addNode","id":1,"val":8},
+{"t":"addEdge","from":0,"to":1},
+{"t":"addNode","id":2,"val":15},
+{"t":"addEdge","from":1,"to":2},
+{"t":"addNode","id":3,"val":16},
+{"t":"addEdge","from":2,"to":3},
+{"t":"addNode","id":4,"val":23},
+{"t":"addEdge","from":3,"to":4},
+{"t":"note","text":"Suche nach 16: Liste von vorne durchlaufen."},
+{"t":"visit","id":0},
+{"t":"visit","id":1},
+{"t":"visit","id":2},
+{"t":"visit","id":3},
+{"t":"found","i":3},
+{"t":"done"}
+]
+}

@@ -1,0 +1,21 @@
+{
+"algo":"stack",
+"titel":"Stack (LIFO)",
+"view":"tree",
+"init":{"layout":"chain-v"},
+"events":[
+{"t":"note","text":"Stack: push legt oben auf, pop nimmt das oberste Element."},
+{"t":"addNode","id":0,"val":5},
+{"t":"addNode","id":1,"val":3},
+{"t":"addNode","id":2,"val":8},
+{"t":"addNode","id":3,"val":1},
+{"t":"note","text":"pop() entfernt das zuletzt eingefügte Element (1, dann 8)."},
+{"t":"visit","id":3},
+{"t":"removeNode","id":3},
+{"t":"visit","id":2},
+{"t":"removeNode","id":2},
+{"t":"note","text":"push(9) legt wieder oben auf."},
+{"t":"addNode","id":4,"val":9},
+{"t":"done"}
+]
+}

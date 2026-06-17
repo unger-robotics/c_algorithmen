@@ -7,6 +7,11 @@
     {"kategorie":"Sortieren","titel":"Mergesort","datei":"mergesort.json"},
     {"kategorie":"Sortieren","titel":"Heapsort","datei":"heapsort.json"},
     {"kategorie":"Suchen","titel":"Lineare Suche","datei":"linearesuche.json"},
-    {"kategorie":"Suchen","titel":"Binäre Suche","datei":"binaeresuche.json"}
+    {"kategorie":"Suchen","titel":"Binäre Suche","datei":"binaeresuche.json"},
+    {"kategorie":"Datenstrukturen","titel":"Verkettete Liste","datei":"verkettete_liste.json"},
+    {"kategorie":"Datenstrukturen","titel":"Stack (LIFO)","datei":"stack.json"},
+    {"kategorie":"Datenstrukturen","titel":"Queue (FIFO)","datei":"queue.json"},
+    {"kategorie":"Datenstrukturen","titel":"Binärer Suchbaum","datei":"bst.json"},
+    {"kategorie":"Datenstrukturen","titel":"Hashtabelle","datei":"hashtabelle.json"}
   ]
 }

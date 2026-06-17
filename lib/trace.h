@@ -34,6 +34,7 @@ int  trace_is_active(void);
 void trace_begin(const char *algo, const char *titel, const char *view);
 void trace_init_array(const int *a, int n);
 void trace_init_none(void);   /* fuer tree/graph: Struktur entsteht via Events */
+void trace_init_layout(const char *layout); /* tree/graph: Layout-Hinweis fuer den Renderer */
 
 /* universell */
 void trace_note(const char *text);

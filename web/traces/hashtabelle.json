@@ -1,0 +1,28 @@
+{
+"algo":"hashtabelle",
+"titel":"Hashtabelle (Chaining)",
+"view":"tree",
+"init":{"layout":"hash"},
+"events":[
+{"t":"note","text":"Hashtabelle: Schlüssel per h(k)=k mod 5 auf Buckets verteilen."},
+{"t":"addNode","id":0,"val":12},
+{"t":"bucket","idx":2,"ids":[0]},
+{"t":"addNode","id":1,"val":5},
+{"t":"bucket","idx":0,"ids":[1]},
+{"t":"addNode","id":2,"val":22},
+{"t":"bucket","idx":2,"ids":[0,2]},
+{"t":"addNode","id":3,"val":7},
+{"t":"bucket","idx":2,"ids":[0,2,3]},
+{"t":"addNode","id":4,"val":17},
+{"t":"bucket","idx":2,"ids":[0,2,3,4]},
+{"t":"addNode","id":5,"val":9},
+{"t":"bucket","idx":4,"ids":[5]},
+{"t":"note","text":"Suche 17: Bucket h(17)=2 durchlaufen."},
+{"t":"visit","id":0},
+{"t":"visit","id":2},
+{"t":"visit","id":3},
+{"t":"visit","id":4},
+{"t":"found","i":4},
+{"t":"done"}
+]
+}

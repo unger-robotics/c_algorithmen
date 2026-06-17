@@ -69,6 +69,13 @@ void trace_init_none(void) {
   first_event = 1;
 }
 
+void trace_init_layout(const char *layout) {
+  if (!tf) return;
+  fputs("\"init\":{\"layout\":", tf); jstr(layout); fputs("},\n", tf);
+  fputs("\"events\":[\n", tf);
+  first_event = 1;
+}
+
 /* --- Event-Builder ------------------------------------------------------- */
 static void ev_begin(const char *t) {
   if (!first_event) fputs(",\n", tf);

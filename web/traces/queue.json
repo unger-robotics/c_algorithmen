@@ -1,0 +1,25 @@
+{
+"algo":"queue",
+"titel":"Queue (FIFO)",
+"view":"tree",
+"init":{"layout":"chain-h"},
+"events":[
+{"t":"note","text":"Queue: enqueue hängt hinten an, dequeue nimmt vorne weg."},
+{"t":"addNode","id":0,"val":5},
+{"t":"addNode","id":1,"val":3},
+{"t":"addEdge","from":0,"to":1},
+{"t":"addNode","id":2,"val":8},
+{"t":"addEdge","from":1,"to":2},
+{"t":"addNode","id":3,"val":1},
+{"t":"addEdge","from":2,"to":3},
+{"t":"note","text":"dequeue() entfernt das vorderste (zuerst eingefügte) Element."},
+{"t":"visit","id":0},
+{"t":"removeNode","id":0},
+{"t":"visit","id":1},
+{"t":"removeNode","id":1},
+{"t":"note","text":"enqueue(9) hängt hinten an."},
+{"t":"addNode","id":4,"val":9},
+{"t":"addEdge","from":3,"to":4},
+{"t":"done"}
+]
+}

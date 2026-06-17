@@ -29,6 +29,11 @@ run algorithmen/sortieren/mergesort       Sortieren  "Mergesort"
 run algorithmen/sortieren/heapsort        Sortieren  "Heapsort"
 run algorithmen/suchen/linearesuche       Suchen     "Lineare Suche"
 run algorithmen/suchen/binaeresuche       Suchen     "Binäre Suche"
+run algorithmen/datenstrukturen/verkettete_liste  Datenstrukturen  "Verkettete Liste"
+run algorithmen/datenstrukturen/stack             Datenstrukturen  "Stack (LIFO)"
+run algorithmen/datenstrukturen/queue             Datenstrukturen  "Queue (FIFO)"
+run algorithmen/datenstrukturen/bst               Datenstrukturen  "Binärer Suchbaum"
+run algorithmen/datenstrukturen/hashtabelle       Datenstrukturen  "Hashtabelle"
 
 # ---- manifest.json zusammensetzen ----------------------------------------
 {
