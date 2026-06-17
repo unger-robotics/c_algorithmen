@@ -31,7 +31,7 @@ int main(void){
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	do{
-		system("clear"); // system("cls");
+		printf("\033[2J\033[H"); // Bildschirm loeschen (ANSI, portabel statt system("clear"))
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
 		//Eingabe ein Zeichen
